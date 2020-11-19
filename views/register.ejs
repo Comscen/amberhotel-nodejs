@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<%- include("partials/header.ejs") %>
+
+<body>
+
+    <%- include("partials/nav.ejs") %>
+
+    <div class="register-photo">
+        <div class="border rounded shadow form-container">
+            <form method="post" onsubmit = "return validateForm(this)">
+                <h2 class="text-center"><strong>Create</strong> an account.</h2>
+
+                <% if (typeof errors != 'undefined') { %>
+                    <% for (error of errors) { %>
+                    <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
+                    <% } %>
+                <% } %>
+
+                <% if (typeof messages != 'undefined') { %>
+                    <% for (message of messages) { %>
+                    <div class="alert alert-success" role="alert"><span><%= message.msg %></span></div>
+                    <% } %>
+                <% } %>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="name" placeholder="Name" oninput="isFieldValid(this)" required>
+                    <small id="nameError" class="form-text text-muted" style="display: none;">Max 50 characters without symbols or numbers.</small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="surname" placeholder="Surname" oninput="isFieldValid(this)" required>
+                    <small id="surnameError" class="form-text text-muted" style="display: none;">Max 50 characters without symbols or numbers.</small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="email" name="email" placeholder="E-mail address" oninput="isFieldValid(this)" required>
+                    <small id="emailError" class="form-text text-muted" style="display: none;">Provided e-mail address is invalid.</small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password" placeholder="Password" oninput="isFieldValid(this)" required>
+                    <small id="passwordError" class="form-text text-muted" style="display: none;">5-30 characters long with at least one small letter, one big letter and one number.</small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="repeatPassword" placeholder="Repeat password" oninput="doPasswordsMatch(this)" required>
+                    <small id="repeatPasswordError" class="form-text text-muted" style="display: none;">Passwords do not match</small>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <label class="form-check-label"><input class="form-check-input" type="checkbox" required>
+                            I agree to the license terms.
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background: rgb(224,116,37);">Sign Up</button></div>
+                <a class="already" href="/login">You already have an account? Login here.</a>
+            </form>
+        </div>
+    </div>
+
+    <script type="application/javascript">
+    
+        const regexes = {
+            name: /^[^0-9]{0}[^\\W]{0}[\p{L}]{1,50}$/u,
+            surname: /^[^0-9]{0}[^\\W]{0}[\p{L}]{1,50}$/u,
+            email: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+            password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*#?]{5,30}/,
+        };
+
+        function changeBorder(element, color) {
+           element.style.border = `1px solid ${color}`;
+        }
+
+
+        function doPasswordsMatch(field) {
+            if (field.value == document.getElementsByName('password')[0].value) {
+                changeBorder(field, 'green');
+                document.getElementById(`${field.name}Error`).style = 'display: none;'
+                return true;
+            }
+            changeBorder(field, 'red');
+            document.getElementById(`${field.name}Error`).style.removeProperty('display');
+            return false;
+        }
+
+        function isFieldValid(field) {
+            if(!regexes[field.name].test(field.value)) {
+                changeBorder(field, 'red');
+                document.getElementById(`${field.name}Error`).style.removeProperty('display');
+                return false;
+            }
+            changeBorder(field, 'green');
+            document.getElementById(`${field.name}Error`).style = 'display: none;'
+            return true;
+        }
+
+        function validateForm(form) {
+            for (let input of document.getElementsByClassName('form-control')) {
+                if (!isFieldValid(input))
+                    return false;
+            }
+            return true;
+        }    
+
+    </script>
+
+    <%- include("partials/footer.ejs") %>
+    <%- include("partials/scripts.ejs") %>
+
+</body>
+
+</html>

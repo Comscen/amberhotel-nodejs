@@ -1,0 +1,33 @@
+<nav class="navbar navbar-light navbar-expand-md border rounded-0 shadow navigation-clean-button">
+    <div class="container">
+        <a class="navbar-brand" href="/" style="width: 280px;height: 100px;">
+            <img src="/img/amber-hotel-full-logo.png">
+        </a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+            class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Hotels</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
+
+                <% if (typeof session.logged != 'undefined') { %>
+                    <li class="nav-item"><a class="nav-link" href="/account">Account</a></li>
+                <% } %>
+
+            </ul>
+            <span class="navbar-text actions">
+
+                <% if (typeof session.logged != 'undefined') { %>
+                    <a class="btn btn-light action-button" role="button" href="/logout" style="background: rgb(224,116,37);">Sign out</a>
+                <% } else { %>
+                        <a class="login" href="/login">Sign In</a>
+                        <a class="btn btn-light action-button" role="button" href="/register" style="background: rgb(224,116,37);">Sign Up</a>
+                <% } %>
+
+            </span>
+        </div>
+    </div>
+</nav>
