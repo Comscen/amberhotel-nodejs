@@ -6,21 +6,26 @@ var app = express()
 var path = require('path')
 var bodyParser = require('body-parser')
 var favicon = require('serve-favicon')
-var database = require('./dbconnection')
-
+var mongodb = require('./mongodb')
 const session = require('express-session')
 
-database.connect()
 
-app.set('view engine', 'ejs')
+/* 
+This session middleware is not secure and we should use Redis client with
+connect-redis or connect-mongo with our client.
+*/
+app.use(session({secret: 'amber-secret', resave: false, saveUninitialized: false}))
 
 app.use(favicon(__dirname + '/public/favicon.ico'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(session({secret: 'amber-secret', resave: false, saveUninitialized: false}))
+app.set('view engine', 'ejs')
+mongodb.connect()
 
-// Routing
+/* 
+    Main routing
+*/
 var indexRoutes = require('./routes/index')
 var loginRoutes = require('./routes/login')
 var registerRoutes = require('./routes/register')
@@ -31,22 +36,33 @@ app.use('/login', loginRoutes)
 app.use('/register', registerRoutes)
 app.use('/account', accountRoutes)
 
+/* 
+    Routing for pages that don't need their own controller. About and license pages
+    are simple and nearly static and logout only deletes session variables.
+*/
 app.get('/about', (req, res) => res.render('about.ejs', {session: req.session}))
-
 app.get('/license', (req, res) => res.render('license.ejs', {session: req.session}))
-
 app.get('/logout', (req, res) => {
     delete req.session.logged
     delete req.session.userId
     return res.render('index.ejs', {session: req.session})
 })
 
+/* 
+    This method call defines which port this application should use.
+    To change said port for development purposes, use environment variable 
+    with proper name and leave 3000 as default.
+*/
 app.listen(process.env.PORT || 3000, function () {
     console.log(`Application started on PORT: ${process.env.PORT || 3000}`);
 });
 
+/* 
+    This method call defines what the app should do when SIGINT interrupt
+    is sent. It's configured to close the database connection and kill the server.
+*/
 process.on('SIGINT', function () {
     console.log("Application shutting down...");
-    database.close()
+    mongodb.close()
     process.exit();
 });

@@ -61,7 +61,7 @@ app.listen(process.env.PORT || 3000, function () {
 
 ### MongoDB
 
-Now you can open the ```dbconnection.js``` file (still in project's root folder). You will see a string looking like that:
+Now you can open the ```mongodb.js``` file (still in project's root folder). You will see a string looking like that:
 
 ```javascript
 `mongodb+srv://${process.env.AHDB_LOGIN}:${process.env.AHDB_PASSWORD}@${process.env.AHDB_HOST}/${process.env.AHDB_DATABASE}?retryWrites=true&w=majority`
