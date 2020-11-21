@@ -8,13 +8,18 @@ var bodyParser = require('body-parser')
 var favicon = require('serve-favicon')
 var mongodb = require('./mongodb')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 
-
-/* 
-This session middleware is not secure and we should use Redis client with
-connect-redis or connect-mongo with our client.
-*/
-app.use(session({secret: 'amber-secret', resave: false, saveUninitialized: false}))
+app.use(session({
+    secret: 'amber-secret', 
+    resave: false, 
+    saveUninitialized: false,
+    cookie: { maxAge: 60 * 60 * 1000 },
+    store: new MongoStore({
+        mongooseConnection: mongodb.getConnection(),
+        clear_interval: 3600
+    })
+}))
 
 app.use(favicon(__dirname + '/public/favicon.ico'))
 app.use(bodyParser.json())
