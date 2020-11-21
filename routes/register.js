@@ -7,4 +7,8 @@ router.get("/", registerController.showRegisterForm)
 
 router.post("/", registerController.handleRegisterForm)
 
+router.get("/hotel", registerController.showHotelRegisterForm)
+
+router.post("/hotel", registerController.handleHotelRegisterForm)
+
 module.exports = router

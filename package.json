@@ -27,6 +27,7 @@
 		"express-validator": "^6.6.1",
 		"mongoose": "^5.10.14",
 		"nanoid": "^3.1.16",
+		"postal-codes-js": "^2.5.2",
 		"serve-favicon": "^2.2.0"
 	},
 	"repository": {
