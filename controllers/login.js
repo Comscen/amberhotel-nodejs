@@ -7,25 +7,28 @@ exports.showLoginForm = (req, res) => {
 }
 
 exports.handleLoginForm = async (req, res) => {
+    
+    const checkPasswordAndProceed = account => {
+        if (bcrypt.compareSync(req.body.password, account.password)) {
+            req.session.logged = true
+            req.session.userId = account._id
+            if (typeof account.admin == 'undefined') //Only private accounts can be admin accounts
+                req.session.business = true
+            return res.render('index.ejs', { messages: [{ msg: 'You are now signed in!' }], session: req.session })
+        }
+        return res.render('login.ejs', { errors: [{ msg: 'Incorrect e-mail or password!' }], session: req.session })
+    }
+    
     var queries = [
-        await User.findOne({email : req.body.email}).select('_id password').lean().exec(),
+        await User.findOne({email : req.body.email}).select('_id password admin').lean().exec(),
         await Hotel.findOne({email: req.body.email}).select('_id password').lean().exec(),
     ]
     
     await Promise.all(queries).then(results => {
         if (results[0] !== null) {
-            if (bcrypt.compareSync(req.body.password, results[0].password)) {
-                req.session.logged = true
-                req.session.userId = results[0]._id
-                return res.render('index.ejs', { messages: [{ msg: 'You are now signed in!' }], session: req.session })
-            }
+            checkPasswordAndProceed(results[0])
         } else if (results[1] !== null) {
-            if (bcrypt.compareSync(req.body.password, results[1].password)) {
-                req.session.logged = true
-                req.session.business = true
-                req.session.userId = results[1]._id
-                return res.render('index.ejs', { messages: [{ msg: 'You are now signed in as a business account!' }], session: req.session })
-            }
+            checkPasswordAndProceed(results[1])
         } else {
             return res.render('login.ejs', { errors: [{ msg: 'Incorrect e-mail or password!' }], session: req.session })
         }
