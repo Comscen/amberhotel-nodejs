@@ -3,7 +3,7 @@
 
 AmberHotel is a web application made by us as a project for our studies. It's premise is to work like booking.com where you can easily browse thousands of hotel rooms and apartments to find what suits you best and make a reservation.
 
-You can look at the newest version <a href= "https://amberhotel.herokuapp.com">here</a>.
+~~You can look at the newest version <a href= "#">here</a>.~~ *Deployments temporarily disabled*
 
 A brief list of functionalities:
 
@@ -38,7 +38,6 @@ added 149 packages from 157 contributors and audited 149 packages in 9.448s
 
 found 0 vulnerabilities
 ```
-<br>
 
 ### Application's port
 
@@ -57,33 +56,20 @@ app.listen(process.env.PORT || 3000, function () {
     console.log(`Application started on PORT: ${process.env.PORT || 3000}`);
 });
 ```
-<br>
 
 ### MongoDB
 
 Now you can open the ```mongodb.js``` file (still in project's root folder). You will see a string looking like that:
 
 ```javascript
-`mongodb+srv://${process.env.AHDB_LOGIN}:${process.env.AHDB_PASSWORD}@${process.env.AHDB_HOST}/${process.env.AHDB_DATABASE}?retryWrites=true&w=majority`
+`mongodb://localhost:27017/amberhotel`
 ```
 
-To connect to your MongoDB cluster you need to create four environment variables or replace ```${process.env.AHDB_LOGIN}```, ```${process.env.AHDB_PASSWORD}```, ```{process.env.AHDB_HOST}``` and ```${process.env.AHDB_DATABASE}``` with your database info.
+To connect to your local MongoDB you need to create a cluster named ```amberhotel```.
 
-Example with creating environment variables:
-```
-(Linux)
+If you want to use a different cluster name, just replace ```/amberhotel``` with ```/myclustername```.
 
-export AHDB_LOGIN=admin              //Username of a user with permissions to read and write
-export AHDB_PASSWORD=secretpassword  //User's password
-export AHDB_HOST=localhost:27017     //Address to host that has a MongoDB instance running
-export AHDB_DATABASE=mycluster       //Name of a cluster you want your data to be stored in
-```
-
-Example with modifing source code:
-```javascript
-`mongodb+srv://myuser:secredpassword@localhost:27017/mycluster?retryWrites=true&w=majority`
-```
-<br>
+If your MongoDB instance is running on other port than ```27017``` you can change ```:27017``` to ```:myportnumber```.
 
 ### Running the application
 
