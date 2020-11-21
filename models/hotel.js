@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var { nanoid } = require('nanoid')
 
 const HotelSchema = new mongoose.Schema({
     _id: { type: String, default: () => nanoid(10) },
@@ -9,7 +10,7 @@ const HotelSchema = new mongoose.Schema({
     city: { type: String, required: true },
     address: { type: String, required: true },
     postalCode: { type: String, required: true },
-    verified: { type: Boolean, default: false },
+    webPage: String,
     photo: String,
 })
 

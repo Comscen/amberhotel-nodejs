@@ -10,7 +10,10 @@
     <div class="register-photo">
         <div class="border rounded shadow form-container">
             <form method="post" onsubmit = "return validateForm(this)">
-                <h2 class="text-center"><strong>Create</strong> an account.</h2>
+                <h2 class="text-center">
+                    <div class="illustration"><img src="img/amber-hotel-amber.png" style="width: 100px;"></div>
+                    <strong>Create</strong> an account.
+                </h2>
 
                 <% if (typeof errors != 'undefined') { %>
                     <% for (error of errors) { %>
@@ -42,12 +45,12 @@
                 </div>
                 <div class="form-group">
                     <input class="form-control" type="password" name="repeatPassword" placeholder="Repeat password" oninput="doPasswordsMatch(this)" required>
-                    <small id="repeatPasswordError" class="form-text text-muted" style="display: none;">Passwords do not match</small>
+                    <small id="repeatPasswordError" class="form-text text-muted" style="display: none;">Passwords do not match.</small>
                 </div>
                 <div class="form-group">
                     <div class="form-check">
                         <label class="form-check-label"><input class="form-check-input" type="checkbox" required>
-                            I agree to the license terms.
+                            I agree to the <a href="/license" target="_blank">license terms</a>.
                         </label>
                     </div>
                 </div>
@@ -57,52 +60,8 @@
         </div>
     </div>
 
-    <script type="application/javascript">
+    <script src="/js/basicValidation.js" type="application/javascript"></script>
     
-        const regexes = {
-            name: /^[^0-9]{0}[^\\W]{0}[\p{L}]{1,50}$/u,
-            surname: /^[^0-9]{0}[^\\W]{0}[\p{L}]{1,50}$/u,
-            email: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
-            password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*#?]{5,30}/,
-        };
-
-        function changeBorder(element, color) {
-           element.style.border = `1px solid ${color}`;
-        }
-
-
-        function doPasswordsMatch(field) {
-            if (field.value == document.getElementsByName('password')[0].value) {
-                changeBorder(field, 'green');
-                document.getElementById(`${field.name}Error`).style = 'display: none;'
-                return true;
-            }
-            changeBorder(field, 'red');
-            document.getElementById(`${field.name}Error`).style.removeProperty('display');
-            return false;
-        }
-
-        function isFieldValid(field) {
-            if(!regexes[field.name].test(field.value)) {
-                changeBorder(field, 'red');
-                document.getElementById(`${field.name}Error`).style.removeProperty('display');
-                return false;
-            }
-            changeBorder(field, 'green');
-            document.getElementById(`${field.name}Error`).style = 'display: none;'
-            return true;
-        }
-
-        function validateForm(form) {
-            for (let input of document.getElementsByClassName('form-control')) {
-                if (!isFieldValid(input))
-                    return false;
-            }
-            return true;
-        }    
-
-    </script>
-
     <%- include("partials/footer.ejs") %>
     <%- include("partials/scripts.ejs") %>
 
