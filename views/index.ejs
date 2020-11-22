@@ -12,13 +12,15 @@
             
             <% if (typeof messages != 'undefined') { %>
                 <% for (message of messages) { %>
-                <div class="alert alert-success" role="alert"><span><%= message.msg %></span></div>
+                    <div class="col-md-12">
+                        <div class="alert alert-success" role="alert" style="width: 100%;"><span><%= message.msg %></span></div>
+                    </div>
                 <% } %>
             <% } %>
             
-            <div class="col">
-                <div class="carousel slide" data-ride="carousel" id="carousel-1" style="height: 500px;width: 1140px;">
-                    <div class="carousel-inner" style="height: 500px;width: 1140px;">
+            <div class="col-md-12">
+                <div class="carousel slide" data-ride="carousel" id="carousel-1" style="height: 500px;width: 1108px;">
+                    <div class="carousel-inner" style="height: 500px;width: 1108px;">
                         <div class="carousel-item active"><img class="w-100 d-block" src="/img/11.jpg" alt="Slide Image"></div>
                         <div class="carousel-item"><img class="w-100 d-block" src="/img/13.jpg" alt="Slide Image"></div>
                         <div class="carousel-item"><img class="w-100 d-block" src="/img/15.png" alt="Slide Image"></div>

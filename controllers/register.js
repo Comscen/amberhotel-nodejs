@@ -31,7 +31,11 @@ async function emailAlreadyInDatabase(email, accountType) {
 }
 
 exports.showRegisterForm = (req, res) => {
-    res.render('register.ejs', { session: req.session })
+    res.render('authorization/register.ejs', { session: req.session })
+}
+
+exports.showHotelRegisterForm = (req, res) => {
+    return res.render('authorization/registerHotel.ejs', { session: req.session })
 }
 
 exports.handleRegisterForm = [
@@ -72,7 +76,7 @@ exports.handleRegisterForm = [
             }).save((error, obj) => {
                 if (error) {
                     console.log(`Database error while creating new account: ${error}`)
-                    return res.render('register.ejs', { 
+                    return res.render('authorization/register.ejs', { 
                         errors: [{ msg: 'There was a problem while creating your account. Please try again later.' }], 
                         session: req.session })
                 } else {
@@ -81,15 +85,11 @@ exports.handleRegisterForm = [
 
             })
         } else {
-            return res.render('register.ejs', { errors: errors, session: req.session })
+            return res.render('authorization/register.ejs', { errors: errors, session: req.session })
         }
     }
 
 ]
-
-exports.showHotelRegisterForm = (req, res) => {
-    return res.render('registerHotel.ejs', { session: req.session })
-}
 
 exports.handleHotelRegisterForm = [
 
@@ -105,17 +105,9 @@ exports.handleHotelRegisterForm = [
     body('hotelName').trim()
         .isLength({min: 3, max: 64}).withMessage('Hotel name must be between 3 and 64 characters long.'),
 
-    body('street').trim()
-        .matches(/^[\p{L}. .'0-9.-.&]{0,}$/u).withMessage('Street name cannot special characters other than "&", "-" and "\'".')
-        .isLength({ min: 3, max: 64 }).withMessage('Street name must be between 3 and 64 characters long.'),
-
-    body('building').trim()
-        .isNumeric().withMessage('Invalid building number.')
-        .isLength({ min: 1 }).withMessage('Building number cannot be empty.')
-        .escape(),
-
-    body('hotelName').trim()
-        .isLength({min: 1, max: 85}).withMessage('Hotel name must be between 3 and 64 characters long.'),
+    body('address').trim()
+        .matches(/^[\p{L}. .'0-9.-.&]{0,}$/u).withMessage('Address cannot special characters other than "&", "-" and "\'".')
+        .isLength({ min: 3, max: 64 }).withMessage('Address name must be between 3 and 64 characters long.'),
 
     body('country').trim()
         .isIn(['Poland', 'Germany', 'Austria', 'France', 'Denmark']).withMessage('Invalid country.')
@@ -155,7 +147,7 @@ exports.handleHotelRegisterForm = [
                 name: req.body.hotelName,
                 country: country,
                 city: req.body.city,
-                address: `${req.body.street} ${req.body.building}`,
+                address: req.body.address,
                 postalCode: postalCode,
                 webPage: undefined,
                 photo: undefined
@@ -173,7 +165,7 @@ exports.handleHotelRegisterForm = [
             newHotel.save((error, obj) => {
                 if (error) {
                     console.log(`Database error while creating new business account: ${error}`)
-                    return res.render('registerHotel.ejs', { 
+                    return res.render('authorization/registerHotel.ejs', { 
                         errors: [{ msg: 'There was a problem while creating your business account. Please try again later.' }], 
                         session: req.session 
                         })
@@ -183,11 +175,7 @@ exports.handleHotelRegisterForm = [
 
             })
         } else {
-            return res.render('registerHotel.ejs', {errors: errors, session: req.session})
+            return res.render('authorization/registerHotel.ejs', {errors: errors, session: req.session})
         }
-
-        
-
     }
-
 ]

@@ -35,11 +35,13 @@ var indexRoutes = require('./routes/index')
 var loginRoutes = require('./routes/login')
 var registerRoutes = require('./routes/register')
 var accountRoutes = require('./routes/account')
+var listingRoutes = require('./routes/listing')
 
 app.use('/', indexRoutes)
 app.use('/login', loginRoutes)
 app.use('/register', registerRoutes)
 app.use('/account', accountRoutes)
+app.use('/listing', listingRoutes)
 
 /* 
     Routing for pages that don't need their own controller. About and license pages
@@ -53,6 +55,13 @@ app.get('/logout', (req, res) => {
     if (req.session.business) delete req.session.business
     return res.render('index.ejs', {session: req.session})
 })
+
+/* 
+    Default routing for pages that do not exist. For example, if someone tries
+    to open /accccount, they will see 404 - Not found instead of Express error
+    "Cannot GET /accccount"
+*/
+app.get("*", (req, res) => res.render('notfound.ejs', {session: req.session}))
 
 /* 
     This method call defines which port this application should use.
