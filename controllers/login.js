@@ -3,10 +3,17 @@ var User = require('../models/user')
 var Hotel = require('../models/hotel')
 
 exports.showLoginForm = (req, res) => {
-    res.render('authorization/login.ejs', { session: req.session })
+    if (req.session.logged) {
+        return res.render('index.ejs', { messages: [{msg: 'You are already signed in!'}], session: req.session })
+    }
+    return res.render('authorization/login.ejs', { session: req.session })
 }
 
 exports.handleLoginForm = async (req, res) => {
+
+    if (req.session.logged) {
+        return res.render('index.ejs', { messages: [{msg: 'You are already signed in!'}], session: req.session })
+    }
 
     const checkPasswordAndProceed = account => {
         if (bcrypt.compareSync(req.body.password, account.password)) {

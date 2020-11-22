@@ -35,11 +35,13 @@ var indexRoutes = require('./routes/index')
 var loginRoutes = require('./routes/login')
 var registerRoutes = require('./routes/register')
 var accountRoutes = require('./routes/account')
+var listingRoutes = require('./routes/listing')
 
 app.use('/', indexRoutes)
 app.use('/login', loginRoutes)
 app.use('/register', registerRoutes)
 app.use('/account', accountRoutes)
+app.use('/listing', listingRoutes)
 
 /* 
     Routing for pages that don't need their own controller. About and license pages

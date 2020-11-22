@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var { nanoid } = require('nanoid')
 
 const CommentSchema = new mongoose.Schema({
     _id: { type: String, default: () => nanoid(10) },
