@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 
-<%- include("partials/header.ejs") %>
+<%- include("../partials/header.ejs") %>
 
 <body>
 
-    <%- include("partials/nav.ejs") %>
+    <%- include("../partials/nav.ejs") %>
 
     <div class="register-photo">
         <div class="border rounded shadow form-container">
             <form method="post" onsubmit = "return validateForm(this)">
                 <h2 class="text-center">
-                    <div class="illustration"><img src="img/amber-hotel-amber.png" style="width: 100px;"></div>
+                    <div class="illustration"><img src="/img/amber-hotel-amber.png" style="width: 100px;"></div>
                     <strong>Create</strong> an account.
                 </h2>
 
@@ -62,8 +62,8 @@
 
     <script src="/js/basicValidation.js" type="application/javascript"></script>
     
-    <%- include("partials/footer.ejs") %>
-    <%- include("partials/scripts.ejs") %>
+    <%- include("../partials/footer.ejs") %>
+    <%- include("../partials/scripts.ejs") %>
 
 </body>
 

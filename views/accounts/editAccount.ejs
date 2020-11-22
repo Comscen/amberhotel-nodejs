@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<%- include("../partials/header.ejs") %>
+
+<body>
+
+    <%- include("../partials/nav.ejs") %>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+            <% if (typeof messages != 'undefined') { %>
+                <% for (message of messages) { %>
+                        <div class="alert alert-success" role="alert" style="margin-top: 16px;"><span><%= message.msg %></span></div>
+                    <% } %>
+            <% } %>
+
+            <% if (typeof errors != 'undefined') { %>
+                <% for (error of errors) { %>
+                        <div class="alert alert-danger" role="alert" style="margin-top: 16px;"><span><%= error.msg %></span></div>
+                <% } %>
+            <% } %>
+            </div>
+            
+            <% if (typeof user != 'undefined') { %>
+                <div class="col-md-12 text-center account-info" style="padding-top: 5px; padding-bottom: 5px">
+                    <div class="card" style="border: 0px">
+                        <div class="card-header" style="background-color: white;">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link active" style="border: 1px solid #dee2e6; border-radius: 5%;">Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/account/<%= user._id %>/edit/password" class="nav-link" style="color: rgb(224,116,37)">Password</a>
+                                </li>
+                            </ul>
+                        <div class="card-body">
+                            <div class="table-responsive text-left">
+                                <form method="post" onsubmit = "return validateForm(this)">
+                                    <table class="table">
+                                        <thead>
+                                            <tr></tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td style="width: 250px;">E-mail address</td>
+                                                <td><input name="email" type="text" value="<%= user.email %>" oninput="isFieldValid(this)" class="form-control" placeholder="Your e-mail address" required>
+                                                    <small id="emailError" class="form-text text-muted" style="display: none;">Provided e-mail address is invalid.</small>
+                                                </td>
+                                            </tr>
+
+                                            <% if (typeof user.postalCode == 'undefined') { %>
+
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td><input name="name" type="text" value="<%= user.name %>" oninput="isFieldValid(this)" class="form-control" placeholder="Your name" required>
+                                                        <small id="nameError" class="form-text text-muted" style="display: none;">Max 50 characters without symbols or numbers.</small>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Surname</td>
+                                                    <td>
+                                                        <input name="surname" type="text" value="<%= user.surname %>" oninput="isFieldValid(this)" class="form-control" placeholder="Your surname" required>
+                                                        <small id="surnameError" class="form-text text-muted" style="display: none;">Max 50 characters without symbols or numbers.</small>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Location</td>
+                                                    <td>
+                                                        <input name="location" type="text" value="<%= user.location %>" class="form-control" placeholder="ex. Paris, France">
+                                                    </td>
+                                                </tr>
+                                            <% } else { %>
+
+                                                <tr>
+                                                    <td>Hotel name</td>
+                                                    <td><input name="hotelName" type="text" value="<%= user.name %>" oninput="isFieldValid(this)" class="form-control" placeholder="Hotel name" required>
+                                                        <small id="hotelNameError" class="form-text text-muted" style="display: none;">Hotel's name must be between 3 and 64 characters.</small>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Country</td>
+                                                    <td>
+                                                        <select name="country" class="form-control" style="width: 100%;text-align: left;" required>
+                                                            <% const countries = ['Poland', 'Germany', 'Austria', 'France', 'Denmark']; %>
+                                                                <% for(country of countries) { %>
+                                                                    <% if (country === user.country) { %>
+                                                                        <option value="<%= country %>" selected><%= country %></option>
+                                                                    <% } else { %>
+                                                                    <option value="<%= country %>"><%= country %></option>
+                                                                    <% } %>
+                                                                <% } %>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>City</td>
+                                                    <td>
+                                                        <input name="city" type="text" value="<%= user.city %>" oninput="isFieldValid(this)" class="form-control" placeholder="City" required>
+                                                        <small id="cityError" class="form-text text-muted" style="display: none;">Invalid city name.</small>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Address</td>
+                                                    <td>
+                                                        <input name="address" type="text" value="<%= user.address %>" oninput="isFieldValid(this)" class="form-control" placeholder="Address" required>
+                                                        <small id="addressError" class="form-text text-muted" style="display: none;">Address cannot special characters other than "&", "-" and "'" and must be 3 to 64 characters long.</small>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Postal code</td>
+                                                    <td>
+                                                        <input name="postal" type="text" value="<%= user.postalCode %>" oninput="isFieldValid(this)" class="form-control" placeholder="Postal code" required>
+                                                        <small id="postalError" class="form-text text-muted" style="display: none;">Invalid postal code.</small>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Homepage</td>
+                                                    <td>
+                                                        <input name="web" type="text" value="<%= user.webPage %>" class="form-control" placeholder="ex. https://myhotel.com">
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+
+                                            <tr>
+                                                <td>Photo URL</td>
+                                                <td><input name="photo" type="text" value="<%= user.photo %>" class="form-control" placeholder="Photo URL"></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="submit" value="Save profile" oninput="doPasswordsMatch(this)" class="btn btn-sm float-right" style="background: rgb(224,116,37);color:white">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+            
+        </div>
+    </div>
+
+    <script src="/js/basicValidation.js" type="application/javascript"></script>
+
+    <%- include("../partials/footer.ejs") %>
+    <%- include("../partials/scripts.ejs") %>
+
+</body>
+
+</html>

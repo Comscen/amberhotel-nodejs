@@ -5,8 +5,7 @@ const regexes = {
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*#?]{5,30}/,
 
     hotelName: /^[\p{L}\d\W]{3,64}$/u,
-    street: /^[\p{L}. .'0-9.-.&]{3,64}$/u,
-    building: /^[0-9]{1,}$/,
+    address: /^[\p{L}. .'0-9.-.&]{3,64}$/u,
     postal: /^[0-9.-]{6}$/,
     city: /^[\p{L}\d\W]{1,85}$/u
 

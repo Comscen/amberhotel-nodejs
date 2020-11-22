@@ -3,13 +3,13 @@ var router = express.Router()
 
 var accountController = require('../controllers/account')
 
-router.get("/", accountController.showOwnAccount)
+router.get("/", accountController.showAccount)
 
-router.get("/:id", accountController.showSpecificAccount)
+router.get("/:id", accountController.showAccount)
 
 router.get("/:id/edit", accountController.showEditForm)
 
-router.post("/:id/edit", accountController.handleEditForm)
+router.post("/:id/edit", accountController.chooseHandlerForEditForm)
 
 router.get('/:id/edit/password', accountController.showEditPasswordForm)
 
