@@ -55,6 +55,13 @@ app.get('/logout', (req, res) => {
 })
 
 /* 
+    Default routing for pages that do not exist. For example, if someone tries
+    to open /accccount, they will see 404 - Not found instead of Express error
+    "Cannot GET /accccount"
+*/
+app.get("*", (req, res) => res.render('notfound.ejs', {session: req.session}))
+
+/* 
     This method call defines which port this application should use.
     To change said port for development purposes, use environment variable 
     with proper name and leave 3000 as default.
