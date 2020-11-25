@@ -42,45 +42,45 @@ const handleEditForm = async (req, res) => {
         req.redirect('/login')
 
     const errors = validationResult(req).array()
+    let isEmailUnavailable = await emailUnavailable(req)
 
-    var user
-    await User.findOne({ _id: req.session.userId }, (err, result) => { user = result })
-
-    if (errors.length === 0) {
-        let location = req.body.location
-        let photo = req.body.photo
-        let email = req.body.email
-
-        user.name = req.body.name
-        user.surname = req.body.surname
-
-        if (location !== '')
-            user.location = location
-        else if (typeof user.location != 'undefined')
-            user.location = undefined
-
-
-        if (photo !== '')
-            user.photo = photo
-        else if (typeof user.photo != 'undefined')
-            user.photo = undefined
-
-        if (await emailUnavailable(req)) {
-            user.save()
-            return res.render('accounts/editAccount.ejs', {
-                user: user,
-                errors: [{ msg: 'E-mail already taken!' }],
-                session: req.session
-            })
+    await User.findOne({ _id: req.session.userId }, (err, result) => {
+        if (errors.length === 0) {
+            let location = req.body.location
+            let photo = req.body.photo
+            let email = req.body.email
+    
+            result.name = req.body.name
+            result.surname = req.body.surname
+    
+            if (location !== '')
+                result.location = location
+            else if (typeof result.location != 'undefined')
+                result.location = undefined
+    
+    
+            if (photo !== '')
+                result.photo = photo
+            else if (typeof result.photo != 'undefined')
+                result.photo = undefined
+    
+            if (isEmailUnavailable) {
+                result.save()
+                return res.render('accounts/editAccount.ejs', {
+                    user: result,
+                    errors: [{ msg: 'E-mail already taken!' }],
+                    session: req.session
+                })
+            }
+    
+            result.email = email
+            result.save()
+            return res.render('accounts/editAccount.ejs', { user: result, messages: [{ msg: 'Changes saved successfully.' }], session: req.session })
+    
+        } else {
+            return res.render('accounts/editAccount.ejs', { user: result, errors: errors, session: req.session })
         }
-
-        user.email = email
-        user.save()
-        return res.render('accounts/editAccount.ejs', { user: user, messages: [{ msg: 'Changes saved successfully.' }], session: req.session })
-
-    } else {
-        return res.render('accounts/editAccount.ejs', { user: user, errors: errors, session: req.session })
-    }
+    })
 }
 
 const handleHotelEditForm = async (req, res) => {
@@ -107,48 +107,50 @@ const handleHotelEditForm = async (req, res) => {
         req.redirect('/login')
 
     const errors = validationResult(req).array()
+    let isEmailUnavailable = await emailUnavailable(req)
 
-    var user
-    await Hotel.findOne({ _id: req.session.userId }, (err, result) => { user = result })
-
-    if (errors.length === 0) {
-        let webPage = req.body.web
-        let photo = req.body.photo
-        let email = req.body.email
-
-        user.name = req.body.hotelName
-        user.country = req.body.country
-        user.city = req.body.city
-        user.address = req.body.address
-        user.postalCode = req.body.postal
-
-        if (webPage !== '')
-            user.webPage = webPage
-        else if (typeof user.webPage != 'undefined')
-            user.webPage = undefined
-
-
-        if (photo !== '')
-            user.photo = photo
-        else if (typeof user.photo != 'undefined')
-            user.photo = undefined
-
-        if (await emailUnavailable(req)) {
-            user.save()
-            return res.render('accounts/editAccount.ejs', {
-                user: user,
-                errors: [{ msg: 'E-mail already taken!' }],
-                session: req.session
-            })
+    await Hotel.findOne({ _id: req.session.userId }, (err, result) => {
+        if (errors.length === 0) {
+            let webPage = req.body.web
+            let photo = req.body.photo
+            let email = req.body.email
+    
+            result.name = req.body.hotelName
+            result.country = req.body.country
+            result.city = req.body.city
+            result.address = req.body.address
+            result.postalCode = req.body.postal
+    
+            if (webPage !== '')
+                result.webPage = webPage
+            else if (typeof result.webPage != 'undefined')
+                result.webPage = undefined
+    
+    
+            if (photo !== '')
+                result.photo = photo
+            else if (typeof result.photo != 'undefined')
+                result.photo = undefined
+    
+            if (isEmailUnavailable) {
+                result.save()
+                return res.render('accounts/editAccount.ejs', {
+                    user: result,
+                    errors: [{ msg: 'E-mail already taken!' }],
+                    session: req.session
+                })
+            }
+    
+            result.email = email
+            result.save()
+            return res.render('accounts/editAccount.ejs', { user: result, messages: [{ msg: 'Changes saved successfully.' }], session: req.session })
+    
+        } else {
+            return res.render('accounts/editAccount.ejs', { user: result, errors: errors, session: req.session })
         }
+    })
 
-        user.email = email
-        user.save()
-        return res.render('accounts/editAccount.ejs', { user: user, messages: [{ msg: 'Changes saved successfully.' }], session: req.session })
-
-    } else {
-        return res.render('accounts/editAccount.ejs', { user: user, errors: errors, session: req.session })
-    }
+    
 }
 
 exports.showAccount = async (req, res) => {
@@ -214,7 +216,7 @@ exports.showEditPasswordForm = async (req, res) => {
     }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT ACCOUNT PAGE (PASSWORD):\n${err}`))
 }
 
-exports.chooseHandlerForEditForm = async (req, res) => {
+exports.chooseHandlerForEditForm = (req, res) => {
     if (typeof req.session.business == 'undefined') {
         handleEditForm(req, res)
     } else {
