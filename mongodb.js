@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 exports.connect = () => {
     mongoose.set('useCreateIndex', true)
-    mongoose.connect(`mongodb://localhost:27017/amberhotel`, {
+    // mongoose.connect(`mongodb://localhost:27017/amberhotel`, {
+    mongoose.connect(`mongodb+srv://${process.env.AHDB_LOGIN}:${process.env.AHDB_PASSWORD}@${process.env.AHDB_HOST}/${process.env.AHDB_DATABASE}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })

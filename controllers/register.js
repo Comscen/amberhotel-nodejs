@@ -7,31 +7,22 @@ var Hotel = require('../models/hotel')
 async function emailAlreadyInDatabase(email, accountType) {
     var alreadyExists;
 
-    if (accountType === 'private') {
-        await User.find({ email: email }, (err, results) => {
-            if (results.length > 0)
-                alreadyExists = true;
-            else
-                alreadyExists = false;
-        })
-    } else if (accountType === 'business') {
-        await Hotel.find({ email: email }, (err, results) => {
-            if (results.length > 0)
-                alreadyExists = true;
-            else
-                alreadyExists = false;
-        })
-    } else {
-        console.log('Invalid account type - assuming e-mail is already taken')
-        return Promise.reject('E-mail already in use!')
-    }
+    var queries = [
+        await User.findOne({email: email}).select('email').exec(),
+        await Hotel.findOne({email: email}).select('email').exec()
+    ]
+
+    await Promise.all(queries).then(results => {
+        if (results[0] != null || results[1] != null)
+            alreadyExists = true
+    })
 
     if (alreadyExists)
         return Promise.reject('E-mail already in use!')
 }
 
 exports.showRegisterForm = (req, res) => {
-    res.render('authorization/register.ejs', { session: req.session })
+    return res.render('authorization/register.ejs', { session: req.session })
 }
 
 exports.showHotelRegisterForm = (req, res) => {
@@ -53,7 +44,7 @@ exports.handleRegisterForm = [
     body('email').trim()
         .isLength({ min: 1 }).withMessage('E-mail cannot be empty!')
         .isEmail().withMessage('Invalid e-mail!')
-        .custom(email => emailAlreadyInDatabase(email, 'private')),
+        .custom(email => emailAlreadyInDatabase(email)),
 
     body('password').trim()
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*#?]{0,}/).withMessage('Password must contain at least one small letter, one big letter and one digit.')
@@ -96,7 +87,7 @@ exports.handleHotelRegisterForm = [
     body('email').trim()
         .isLength({ min: 1 }).withMessage('E-mail cannot be empty!')
         .isEmail().withMessage('Invalid e-mail!')
-        .custom(email => emailAlreadyInDatabase(email, 'business')),
+        .custom(email => emailAlreadyInDatabase(email)),
 
     body('password').trim()
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%&*#?]{0,}/).withMessage('Password must contain at least one small letter, one big letter and one digit.')
