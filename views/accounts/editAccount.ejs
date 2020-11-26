@@ -35,6 +35,11 @@
                                 <li class="nav-item">
                                     <a href="/account/<%= user._id %>/edit/password" class="nav-link" style="color: rgb(224,116,37)">Password</a>
                                 </li>
+                                <% if (typeof session.business != 'undefined') { %>
+                                    <li class="nav-item">
+                                        <a href="/account/<%= user._id %>/edit/photos" class="nav-link" style="color: rgb(224,116,37)">Photos</a>
+                                    </li>
+                                <% } %>
                             </ul>
                         <div class="card-body">
                             <div class="table-responsive text-left">

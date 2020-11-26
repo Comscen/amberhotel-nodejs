@@ -15,4 +15,8 @@ router.get('/:id/edit/password', accountController.showEditPasswordForm)
 
 router.post('/:id/edit/password', accountController.handleEditPasswordForm)
 
+router.get('/:id/edit/photos', accountController.showEditPhotosForm)
+
+router.post('/:id/edit/photos', accountController.handleEditPhotosForm)
+
 module.exports = router

@@ -49,21 +49,21 @@ const handleEditForm = async (req, res) => {
             let location = req.body.location
             let photo = req.body.photo
             let email = req.body.email
-    
+
             result.name = req.body.name
             result.surname = req.body.surname
-    
+
             if (location !== '')
                 result.location = location
             else if (typeof result.location != 'undefined')
                 result.location = undefined
-    
-    
+
+
             if (photo !== '')
                 result.photo = photo
             else if (typeof result.photo != 'undefined')
                 result.photo = undefined
-    
+
             if (isEmailUnavailable) {
                 result.save()
                 return res.render('accounts/editAccount.ejs', {
@@ -72,11 +72,11 @@ const handleEditForm = async (req, res) => {
                     session: req.session
                 })
             }
-    
+
             result.email = email
             result.save()
             return res.render('accounts/editAccount.ejs', { user: result, messages: [{ msg: 'Changes saved successfully.' }], session: req.session })
-    
+
         } else {
             return res.render('accounts/editAccount.ejs', { user: result, errors: errors, session: req.session })
         }
@@ -114,24 +114,24 @@ const handleHotelEditForm = async (req, res) => {
             let webPage = req.body.web
             let photo = req.body.photo
             let email = req.body.email
-    
+
             result.name = req.body.hotelName
             result.country = req.body.country
             result.city = req.body.city
             result.address = req.body.address
             result.postalCode = req.body.postal
-    
+
             if (webPage !== '')
                 result.webPage = webPage
             else if (typeof result.webPage != 'undefined')
                 result.webPage = undefined
-    
-    
+
+
             if (photo !== '')
                 result.photo = photo
             else if (typeof result.photo != 'undefined')
                 result.photo = undefined
-    
+
             if (isEmailUnavailable) {
                 result.save()
                 return res.render('accounts/editAccount.ejs', {
@@ -140,17 +140,17 @@ const handleHotelEditForm = async (req, res) => {
                     session: req.session
                 })
             }
-    
+
             result.email = email
             result.save()
             return res.render('accounts/editAccount.ejs', { user: result, messages: [{ msg: 'Changes saved successfully.' }], session: req.session })
-    
+
         } else {
             return res.render('accounts/editAccount.ejs', { user: result, errors: errors, session: req.session })
         }
     })
 
-    
+
 }
 
 exports.showAccount = async (req, res) => {
@@ -274,3 +274,54 @@ exports.handleEditPasswordForm = [
         }
     }
 ]
+
+exports.handleEditPhotosForm = async (req, res) => {
+    if (!req.session.logged)
+        return res.redirect('/login')
+
+    if (req.params.id != req.session.userId)
+        return res.redirect(`/account/${req.session.userId}`)
+
+    if (typeof req.session.business == 'undefined') {
+        return res.redirect(`/account/${req.session.userId}`)
+    }
+
+    await Hotel.findOne({ _id: req.params.id }, (err, result) => {
+        if (result != null) {
+            result.photos = []
+            
+            if(typeof req.body.photos != 'undefined'){
+                for (photo of req.body.photos) {
+                    if (photo.trim() !== '') {
+                        result.photos.push(photo)
+                    }
+                }
+            }
+            
+            result.save()
+            return res.render('accounts/editHotelPhotos.ejs', { messages: [{ msg: 'Successfully edited photos' }], user: result, session: req.session })
+        }
+        return res.render('accounts/editHotelPhotos.ejs', { errors: [{ msg: 'Something went wrong. Please try again later.' }], user: result, session: req.session })
+
+    }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT HOTEL PHOTOS PAGE:\n${err}`))
+}
+
+exports.showEditPhotosForm = async (req, res) => {
+    if (!req.session.logged)
+        return res.redirect('/login')
+
+    if (req.params.id != req.session.userId)
+        return res.redirect(`/account/${req.session.userId}`)
+
+    if (typeof req.session.business == 'undefined') {
+        return res.redirect(`/account/${req.session.userId}`)
+    }
+
+    await Hotel.findOne({ _id: req.params.id }, (err, result) => {
+        if (result != null) {
+            return res.render('accounts/editHotelPhotos.ejs', { user: result, session: req.session })
+        }
+        return res.render('accounts/editHotelPhotos.ejs', { errors: [{ msg: 'Something went wrong' }], session: req.session })
+    }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT HOTEL PHOTOS PAGE:\n${err}`))
+
+}
