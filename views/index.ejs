@@ -18,7 +18,7 @@
                 <% } %>
             <% } %>
             
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
                 <div class="carousel slide" data-ride="carousel" id="carousel-1" style="height: 500px;width: 1108px;">
                     <div class="carousel-inner" style="height: 500px;width: 1108px;">
                         <div class="carousel-item active"><img class="w-100 d-block" src="/img/11.jpg" alt="Slide Image"></div>
@@ -42,21 +42,21 @@
                     </ol>
                 </div>
             </div>
-        </div>
+        </div> -->
         <% if (typeof hotels != 'undefined') { %>
             <div class="row" style="margin-top: 10px">
                 <% for (hotel of hotels) { %>
                     <div class="col-md-6">
                         <div class="card">
                             <% if (typeof hotel.photo != 'undefined') { %>
-                                <img class="card-img-top w-100 d-block" alt="" src="<%= hotels.photo %>"/>
+                                <img class="card-img-top w-100 d-block" alt="" src="<%= hotel.photo %>"/>
                             <% } else { %>
                                 <img class="card-img-top w-100 d-block" alt="" src="/img/no_photo.png"/>
                             <% } %>
                             <div class="card-body">
                                 <h4 class="card-title"><%= hotel.name %></h4>
                                 <p class="card-text"><%= hotel.city %>, <%= hotel.country %></p>
-                                <a class="btn btn-primary" href="/account/<%= hotel._id %>" >Visit hotel page!</a>
+                                <a class="btn" style="background-color: rgb(224,116,37); color:white" href="/account/<%= hotel._id %>" >Visit hotel page!</a>
                             </div>
                         </div>
                     </div>

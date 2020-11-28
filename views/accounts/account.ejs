@@ -32,44 +32,45 @@
                     <h3><%= user.name %> <%= user.surname %></h3>
 
                     <% if (typeof session.logged != 'undefined' && session.userId === user._id) { %>
-                        <a class="btn btn-primary btn-sm float-right" href="/account/<%= user._id %>/edit" role="button" style="background: rgb(224,116,37);border-color:white">Edit profile</a>
+                        <a class="btn btn-primary btn-sm float-right" href="/account/<%= user._id %>/edit" role="button" style="background: rgb(224,116,37);border-color:white">Edit profile <i class="icon ion-edit"></i></a>
                     <% } %>
 
                     <div class="table-responsive text-left">
                         <table class="table">
                             <tbody>
                                 <tr>
-                                    <td style="width: 200px;">E-mail</td>
+                                    <td style="width: 200px;"><i class="icon ion-email"></i> E-mail</i></td>
                                     <td><%= user.email %></td>
                                 </tr>
     
                                 <!-- Fields for private accounts -->
                                 <% if (typeof user.admin != 'undefined') { %>
                                     <tr>
-                                        <td>Joined</td>
+                                        <td><i class="icon ion-person-add"></i> Joined</td>
                                         <td><%= user.joined %></td>
                                     </tr>
     
                                     <% if (typeof user.location != 'undefined') { %>
                                         <tr>
-                                            <td>Location</td>
+                                            <td><i class="icon ion-android-home"></i> Location</td>
                                             <td><%= user.location %></td>
                                         </tr>
                                     <% } %>
+                                <!-- Fields for business accounts -->
                                 <% } else {%>
                                     <tr>
-                                        <td>City</td>
+                                        <td><i class="icon ion-android-globe"></i> City</i></td>
                                         <td><%= user.city %>, <%= user.country %></td>
                                     </tr>
 
                                     <tr>
-                                        <td>Address</td>
+                                        <td><i class="icon ion-android-pin"></i> Address</i></td>
                                         <td><%= user.address %>, <%= user.postalCode %></td>
                                     </tr>
 
                                     <% if (typeof user.webPage != 'undefined') { %>
                                         <tr>
-                                            <td>Homepage</td>
+                                            <td><i class="icon ion-ios-world-outline"></i> Homepage</td>
                                             <td><%= user.webPage %></td>
                                         </tr>
                                     <% } %>
