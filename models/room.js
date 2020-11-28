@@ -10,6 +10,7 @@ const RoomSchema = new mongoose.Schema({
     capacity: { type: Number, required: true },
     standard: { type: String, required: true },
     features: mongoose.Schema.Types.Mixed,
+    photos: [String],
     checkInOut: {
         checkIn: { type: String, required: true },
         checkOut: { type: String, required: true }
