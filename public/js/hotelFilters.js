@@ -26,6 +26,15 @@ function resetHotels() {
     }
 }
 
+function resetFilters() {
+    resetHotels();
+    let rating = document.getElementById('rating')
+    rating.value = 3.0
+    updateRangeValue(rating)
+    document.getElementById('city').value = ''
+    document.getElementById('country').value = 'Poland'
+}
+
 function updateRangeValue(input) {
     document.getElementsByTagName('output')[0].innerText = `Minimum rating: ${input.value}`
 }
