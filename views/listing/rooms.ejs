@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<%- include("../partials/header.ejs") %>
+
+<body>
+
+    <%- include("../partials/nav.ejs") %>
+    <link rel="stylesheet" href="/css/room-listing.css">
+
+    <div class="container" style="margin-top: 40px;">
+        <div class="row">
+            <div class="col-md-6" style="max-width: 25%;">
+                <p>tu kiedyś będzie filtracja</p>
+            </div>
+            <div class="col-md-6" style="max-width: 75%;">
+                <div class="row product-list" style="width: 1000px;">
+
+                    <% if (typeof rooms != 'undefined') { %>
+                        <% for (room of rooms) { %>
+                            <div class="col-sm-6 col-md-4 product-item">
+                                <div class="product-container">
+                                    <div class="row">
+                                        <div class="col-md-12"><a class="product-image" href="/room/<%= room._id %>"><img src="<%= room._photo %>"></a></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <h2><%= room.name %></h2>
+                                        </div>
+                                    </div>
+                                    <div class="product-rating">
+                                        <a class="small-text" href="/account/<%= room.hotel._id %>" style="margin-left: 0px;"><%= room.hotel.name %>&nbsp;</a>
+                                        <span class="badge badge-primary">4.2<img src="/img/star.png" style="width: 10px;margin-top: -4px;"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p class="product-description"><%= room.description %></p>
+                                            <div class="row">
+                                                <div class="col-6"><button class="btn" type="button" style="background: rgb(224,116,36);height: 35px;width: 120px;margin-left: 0px;">Book now!</button></div>
+                                                <div class="col-6">
+                                                    <p class="product-price" style="margin-bottom: 0;">€<%= room.price %></p>
+                                                    <p style="text-align: end;font-size: 12px;">per night</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include("../partials/footer.ejs") %>
+    <%- include("../partials/scripts.ejs") %>
+
+</body>
+
+</html>
