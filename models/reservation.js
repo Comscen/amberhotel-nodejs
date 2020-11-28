@@ -15,8 +15,8 @@ const ReservationSchema = new mongoose.Schema({
         ccExpDate:{type: String, required:true},
         holderName:{type: String, required: true}
     },
-    _roomId: { type: String, ref: 'Room', required: true },
-    _userId: { type: String, ref: 'User', required: true }
+    room: { type: String, ref: 'Room', required: true },
+    user: { type: String, ref: 'User', required: true }
 })
 
 const Reservation = mongoose.model('Reservation', ReservationSchema)

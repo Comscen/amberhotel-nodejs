@@ -11,12 +11,12 @@ exports.showDashboard = async (req, res) => {
         return res.render('index.ejs', { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
     }
     
-    await Room.find({_hotelId: req.session.userId}).lean().exec().then(results =>{
-        if(result != null){
+    await Room.find({hotel: req.session.userId}).lean().exec().then(results =>{
+        if(results.length > 0){
             return res.render('dashboard/dashboard.ejs', {rooms: results, session: req.session })
         }
         return res.render('dashboard/dashboard.ejs', {session: req.session, errors: [{msg: 'Something went wrong'}] })
-    }).catch(error => console.log(`Error during hotel rooms query: ${error}`)
+    }).catch(error => console.log(`Error during hotel rooms query: ${error}`))
     
 }
 
@@ -27,7 +27,7 @@ exports.showAddRoomForm = async (req, res) => {
     if (typeof req.session.business == 'undefined') {
         return res.render('index.ejs', { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
     }
-    return res.render('#TODO', { session: req.session })
+    return res.render('dashboard/addRoom.ejs', { session: req.session })
 }
 
 exports.handleAddRoomForm = [
@@ -53,7 +53,7 @@ exports.handleAddRoomForm = [
         .matches('#TODO').withMessage('Number of people can only contain digits!')
         .escape(),
     // Standard - select one menu
-    body('standard').trim().isIn(['Standard', 'Exclusive'])
+    body('standard').trim().isIn(['Standard', 'Exclusive', 'Deluxe', 'Premium'])
         .escape(),
     // Photos - array of URLs
     body('photos').trim()
@@ -79,6 +79,7 @@ exports.handleAddRoomForm = [
                 name: req.body.name,
                 description: req.body.description,
                 price: req.body.price,
+                beds: req.body.beds,
                 capacity: req.body.capacity,
                 standard: req.body.standard,
                 // features: #TODO ,
@@ -87,7 +88,7 @@ exports.handleAddRoomForm = [
                     checkIn: req.body.checkIn,
                     checkOut: req.body.checkOut
                 },
-                _hotelId: req.session.userId
+                hotel: req.session.userId
             }).save((error, obj) => {
                 if (error) {
                     console.log(`Error saving room: ${error}`)
