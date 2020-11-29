@@ -80,25 +80,8 @@
                                     </div>
                                 </div>
 
-                                <!-- STANDARD -->
-                                <div id="input-grp-double-1-2" class="form-row mt-4">
-                                    <div class="col-12 col-sm-6">
-                                        <label for="standard">Room standard</label>
-                                        <select name="standard" class="form-control" style="width: 100%;text-align: left;" id="standard" required>
-                                            <option value="Standard">Standard</option>
-                                            <option value="Exclusive">Exclusive</option>
-                                            <option value="Premium">Premium</option>
-                                            <option value="Deluxe">Deluxe</option>  
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-sm-6 mt-4 mt-sm-0">
-                                        <label for="?????">?????</label>
-                                        <input class="form-control multisteps-form__input" id="?????" type="text" placeholder="?????" required>
-                                    </div>
-                                </div>
-
                                 <!-- CHECK IN AND CHECK OUT -->
-                                <div id="input-grp-double-1-3" class="form-row mt-4">
+                                <div id="input-grp-single-1-3" class="form-row mt-4">
                                     <div class="col-12 col-sm-6">
                                         <label for="checkIn">Check in after</label>
                                         <input type="time" name="checkIn" id="checkIn" class="form-control multisteps-form__input">
@@ -106,6 +89,19 @@
                                     <div class="col-12 col-sm-6 mt-4 mt-sm-0">
                                         <label for="checkOut">Check out before</label>
                                         <input type="time" name="checkOut" id="checkOut" class="form-control multisteps-form__input">
+                                    </div>
+                                </div>
+
+                                 <!-- STANDARD -->
+                                 <div id="input-grp-double-1-2" class="form-row mt-4">
+                                    <div class="col-12 col-sm-12">
+                                        <label for="standard">Room standard</label>
+                                        <select name="standard" class="form-control" style="width: 100%;text-align: left;" id="standard" required>
+                                            <option value="Standard">Standard</option>
+                                            <option value="Exclusive">Exclusive</option>
+                                            <option value="Premium">Premium</option>
+                                            <option value="Deluxe">Deluxe</option>  
+                                        </select>
                                     </div>
                                 </div>
 
@@ -156,7 +152,134 @@
                         <!-- FOURTH FORM -->
                         <div id="single-form-next-prev-2" class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
                             <h3 class="text-center multisteps-form__title">Features</h3>
-                            
+                            <div id="form-content-2" class="multisteps-form__content">
+                                <div id="input-grp-double-3-1" class="form-row mt-4">
+                                    <div class="col-12 col-sm-12">
+                                        <table class="table">
+                                            <tr>
+                                                <td>Free WiFi</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Free WiFi']" id="wifi-yes" value="true">
+                                                        <label class="form-check-label" for="wifi-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Free WiFi']" id="wifi-no" value="false" checked>
+                                                        <label class="form-check-label" for="wifi-no">No</label>
+                                                    </div>
+                                                </td>
+                                                <td>Washing machine</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Washing machine']" id="washing-yes" value="true">
+                                                        <label class="form-check-label" for="washing-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Washing machine']" id="washing-no" value="false" checked>
+                                                        <label class="form-check-label" for="washing-no">No</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kitchen</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Kitchen']" id="kitchen-yes" value="true">
+                                                        <label class="form-check-label" for="kitchen-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Kitchen']" id="kitchen-no" value="false" checked>
+                                                        <label class="form-check-label" for="kitchen-no">No</label>
+                                                    </div>
+                                                </td>
+                                                <td>Free parking</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Free parking']" id="parking-yes" value="true">
+                                                        <label class="form-check-label" for="parking-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Free parking']" id="parking-no" value="false" checked>
+                                                        <label class="form-check-label" for="parking-no">No</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>For smokers</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['For smokers']" id="smokers-yes" value="true">
+                                                        <label class="form-check-label" for="smokers-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['For smokers']" id="smokers-no" value="false" checked>
+                                                        <label class="form-check-label" for="smokers-no">No</label>
+                                                    </div>
+                                                </td>
+                                                <td>TV</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['TV']" id="tv-yes" value="true">
+                                                        <label class="form-check-label" for="tv-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['TV']" id="tv-no" value="false" checked>
+                                                        <label class="form-check-label" for="tv-no">No</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pets allowed</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Pets allowed']" id="pets-yes" value="true">
+                                                        <label class="form-check-label" for="pets-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Pets allowed']" id="pets-no" value="false" checked>
+                                                        <label class="form-check-label" for="pets-no">No</label>
+                                                    </div>
+                                                </td>
+                                                <td>Elevator</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Elevator']" id="elevator-yes" value="true">
+                                                        <label class="form-check-label" for="elevator-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Elevator']" id="elevator-no" value="false" checked>
+                                                        <label class="form-check-label" for="elevator-no">No</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Breakfast</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Breakfast']" id="breakfast-yes" value="true">
+                                                        <label class="form-check-label" for="breakfast-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Breakfast']" id="breakfast-no" value="false" checked>
+                                                        <label class="form-check-label" for="breakfast-no">No</label>
+                                                    </div>
+                                                </td>
+                                                <td>Towels</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Towels']" id="towels-yes" value="true">
+                                                        <label class="form-check-label" for="towels-yes">Yes</label>
+                                                      </div>
+                                                      <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="features['Towels']" id="towels-no" value="false" checked>
+                                                        <label class="form-check-label" for="towels-no">No</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="next-prev-buttons-2" class="button-row d-flex mt-4">
                                 <button class="btn js-btn-prev" type="button" title="Prev" style="background: rgb(224,116,37);color:white">Back</button>
                                 <button class="btn ml-auto" type="submit" title="Finish" style="background: rgb(224,116,37);color:white">Finish</button>
