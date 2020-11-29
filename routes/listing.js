@@ -7,4 +7,6 @@ router.get("/", listingController.showHotels)
 
 router.get("/rooms", listingController.showRooms)
 
+router.get("/rooms/:id", listingController.showSingleRoom)
+
 module.exports = router

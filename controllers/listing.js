@@ -12,3 +12,12 @@ exports.showRooms = async (req, res) => {
         return res.render('listing/rooms.ejs', { rooms: rooms, session: req.session })
     }).catch(err => console.log(`CRITICAL ERROR DURING LISTING ROOMS:\n${err}`))
 }
+
+exports.showSingleRoom = async (req, res) => {
+    await Room.findOne({_id : req.params.id}).populate('hotel').lean().exec().then(result => {
+        if (result == null) {
+            return res.render('listing/room.ejs', { errors: [{ msg: 'Room ID is invalid!' }], session: req.session })
+        }
+        return res.render('listing/room.ejs', { room: result, session: req.session })
+    }).catch(err => console.log(`CRITICAL ERROR DURING SHOWING ROOM:\n${err}`))
+}

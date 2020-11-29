@@ -43,11 +43,13 @@
                 <% for (room of rooms) { %>
                     <tr>
                         <td>
-                            <% if (typeof room.photos != 'undefined' && typeof room.photos[0] != 'undefined') { %>
-                                <img src="<%= room.photos[0] %>" style="width: 140px;"/>
-                            <% } else { %>
-                                <img src="/img/no_photo.png" style="width: 140px;"/>
-                            <% } %>
+                            <a href="/listing/rooms/<%= room._id %>">
+                                <% if (typeof room.photos != 'undefined' && typeof room.photos[0] != 'undefined') { %>
+                                    <img src="<%= room.photos[0] %>" style="width: 140px;"/>
+                                <% } else { %>
+                                    <img src="/img/no_photo.png" style="width: 140px;"/>
+                                <% } %>
+                            </a>
                         </td>
 
                         <td name="hotelName"><%= room.name %></td>

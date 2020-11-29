@@ -22,8 +22,8 @@
                                 <div class="product-container">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <a class="product-image" href="/room/<%= room._id %>">
-                                                <% if (typeof room.photos != 'undefined' && typeof room.photos[0] != 'undefined') {} %>
+                                            <a class="product-image" href="/listing/rooms/<%= room._id %>">
+                                                <% if (typeof room.photos != 'undefined' && typeof room.photos[0] != 'undefined') { %>
                                                     <img src="<%= room.photos[0] %>" />
                                                 <% } else { %>
                                                     <img src="/img/no_photo.png" />
@@ -42,7 +42,21 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <p class="product-description"><%= room.description %></p>
+                                            <p class="product-description">
+                                                <table class="table">
+                                                    <tr>
+                                                        <td style="width:50%;">Beds </td>
+                                                        <td><%= room.beds %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Capacity </td>
+                                                        <td><%= room.capacity %> persons</td>
+                                                    </tr>
+                                                </table>
+                                            </p>
+                                            <p class="product-description">
+
+                                            </p>
                                             <div class="row">
                                                 <div class="col-6"><button class="btn" type="button" style="background: rgb(224,116,36);height: 35px;width: 120px;margin-left: 0px;">Book now!</button></div>
                                                 <div class="col-6">

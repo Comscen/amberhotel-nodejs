@@ -8,15 +8,15 @@
     <%- include("../partials/nav.ejs") %>
     <link rel="stylesheet" href="/css/add-room-form.css">
 
-    <% if (typeof errors != 'undefined') { %>
-                    <% for (error of errors) { %>
-                    <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
-                    <% } %>
-                <% } %>
-
     <section>
         <div id="multple-step-form-n" class="container overflow-hidden" style="margin-top: 0px;margin-bottom: 10px;padding-bottom: 300px;padding-top: 57px;">
             <!-- PROGRESS BAR -->
+            <% if (typeof errors != 'undefined') { %>
+                <% for (error of errors) { %>
+                    <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
+                <% } %>
+            <% } %>
+            
             <div id="progress-bar-button" class="multisteps-form">
                 <div class="row">
                     <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
@@ -166,22 +166,22 @@
                                                 <td>Free WiFi</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Free WiFi']" id="wifi-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Free WiFi]" id="wifi-yes" value="true">
                                                         <label class="form-check-label" for="wifi-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Free WiFi']" id="wifi-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Free WiFi]" id="wifi-no" value="false" checked>
                                                         <label class="form-check-label" for="wifi-no">No</label>
                                                     </div>
                                                 </td>
                                                 <td>Washing machine</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Washing machine']" id="washing-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Washing machine]" id="washing-yes" value="true">
                                                         <label class="form-check-label" for="washing-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Washing machine']" id="washing-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Washing machine]" id="washing-no" value="false" checked>
                                                         <label class="form-check-label" for="washing-no">No</label>
                                                     </div>
                                                 </td>
@@ -190,22 +190,22 @@
                                                 <td>Kitchen</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Kitchen']" id="kitchen-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Kitchen]" id="kitchen-yes" value="true">
                                                         <label class="form-check-label" for="kitchen-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Kitchen']" id="kitchen-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Kitchen]" id="kitchen-no" value="false" checked>
                                                         <label class="form-check-label" for="kitchen-no">No</label>
                                                     </div>
                                                 </td>
                                                 <td>Free parking</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Free parking']" id="parking-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Free parking]" id="parking-yes" value="true">
                                                         <label class="form-check-label" for="parking-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Free parking']" id="parking-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Free parking]" id="parking-no" value="false" checked>
                                                         <label class="form-check-label" for="parking-no">No</label>
                                                     </div>
                                                 </td>
@@ -214,22 +214,22 @@
                                                 <td>For smokers</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['For smokers']" id="smokers-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[For smokers]" id="smokers-yes" value="true">
                                                         <label class="form-check-label" for="smokers-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['For smokers']" id="smokers-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[For smokers]" id="smokers-no" value="false" checked>
                                                         <label class="form-check-label" for="smokers-no">No</label>
                                                     </div>
                                                 </td>
                                                 <td>TV</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['TV']" id="tv-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[TV]" id="tv-yes" value="true">
                                                         <label class="form-check-label" for="tv-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['TV']" id="tv-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[TV]" id="tv-no" value="false" checked>
                                                         <label class="form-check-label" for="tv-no">No</label>
                                                     </div>
                                                 </td>
@@ -238,22 +238,22 @@
                                                 <td>Pets allowed</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Pets allowed']" id="pets-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Pets allowed]" id="pets-yes" value="true">
                                                         <label class="form-check-label" for="pets-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Pets allowed']" id="pets-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Pets allowed]" id="pets-no" value="false" checked>
                                                         <label class="form-check-label" for="pets-no">No</label>
                                                     </div>
                                                 </td>
                                                 <td>Elevator</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Elevator']" id="elevator-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Elevator]" id="elevator-yes" value="true">
                                                         <label class="form-check-label" for="elevator-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Elevator']" id="elevator-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Elevator]" id="elevator-no" value="false" checked>
                                                         <label class="form-check-label" for="elevator-no">No</label>
                                                     </div>
                                                 </td>
@@ -262,22 +262,22 @@
                                                 <td>Breakfast</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Breakfast']" id="breakfast-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Breakfast]" id="breakfast-yes" value="true">
                                                         <label class="form-check-label" for="breakfast-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Breakfast']" id="breakfast-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Breakfast]" id="breakfast-no" value="false" checked>
                                                         <label class="form-check-label" for="breakfast-no">No</label>
                                                     </div>
                                                 </td>
                                                 <td>Towels</td>
                                                 <td>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Towels']" id="towels-yes" value="true">
+                                                        <input class="form-check-input" type="radio" name="features[Towels]" id="towels-yes" value="true">
                                                         <label class="form-check-label" for="towels-yes">Yes</label>
                                                       </div>
                                                       <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="features['Towels']" id="towels-no" value="false" checked>
+                                                        <input class="form-check-input" type="radio" name="features[Towels]" id="towels-no" value="false" checked>
                                                         <label class="form-check-label" for="towels-no">No</label>
                                                     </div>
                                                 </td>

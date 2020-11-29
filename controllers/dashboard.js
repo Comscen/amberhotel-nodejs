@@ -34,9 +34,11 @@ exports.handleAddRoomForm = [
     body('name').trim()
         .matches(/^[^\\W]{0}[\p{L}\d\s\-0-9]{0,}$/u).withMessage('Name can contain alphanumeric characters, "&", spaces and "-"!')
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
+
     // Description - letters, numbers, ',' and '.', 
     body('description').trim()
         .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
+
     // Price - numbers only
     body('price').trim()
         .notEmpty().withMessage('Price cannot be empty!')
@@ -46,6 +48,7 @@ exports.handleAddRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Beds - numbers only
     body('beds').trim()
         .notEmpty().withMessage('Number of beds cannot be empty!')
@@ -57,6 +60,7 @@ exports.handleAddRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Capacity - numbers only
     body('capacity').trim()
         .notEmpty().withMessage('Number of people cannot be empty!')
@@ -66,16 +70,20 @@ exports.handleAddRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Standard - select one menu
     body('standard').trim()
         .isIn(['Standard', 'Exclusive', 'Deluxe', 'Premium']).withMessage('Invalid standard!')
         .escape(),
+
     // Photos - array of URLs
     // body('photos').trim()
         // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
+        
     // Check in and check out - time
     body('checkIn').trim()
         .escape(),
+        
     body('checkOut').trim()
         .escape(),
 
@@ -88,6 +96,7 @@ exports.handleAddRoomForm = [
         }
 
         const errors = validationResult(req).array()
+
         if (errors.length === 0) {
             new Room({
                 name: req.body.name,
