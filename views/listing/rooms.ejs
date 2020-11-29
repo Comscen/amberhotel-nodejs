@@ -21,7 +21,15 @@
                             <div class="col-sm-6 col-md-4 product-item">
                                 <div class="product-container">
                                     <div class="row">
-                                        <div class="col-md-12"><a class="product-image" href="/room/<%= room._id %>"><img src="<%= room._photo %>"></a></div>
+                                        <div class="col-md-12">
+                                            <a class="product-image" href="/room/<%= room._id %>">
+                                                <% if (typeof room.photos != 'undefined' && typeof room.photos[0] != 'undefined') {} %>
+                                                    <img src="<%= room.photos[0] %>" />
+                                                <% } else { %>
+                                                    <img src="/img/no_photo.png" />
+                                                <% } %>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-8">

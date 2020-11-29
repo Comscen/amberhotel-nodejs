@@ -8,6 +8,12 @@
     <%- include("../partials/nav.ejs") %>
     <link rel="stylesheet" href="/css/add-room-form.css">
 
+    <% if (typeof errors != 'undefined') { %>
+                    <% for (error of errors) { %>
+                    <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
+                    <% } %>
+                <% } %>
+
     <section>
         <div id="multple-step-form-n" class="container overflow-hidden" style="margin-top: 0px;margin-bottom: 10px;padding-bottom: 300px;padding-top: 57px;">
             <!-- PROGRESS BAR -->
@@ -76,7 +82,7 @@
                                     </div>
                                     <div class="col-12 col-sm-6 mt-4 mt-sm-0">
                                         <label for="capacity">Capacity</label>
-                                        <input name="capacity" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Capaticy" id="capacity" required>
+                                        <input name="capacity" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Capacity" id="capacity" required>
                                     </div>
                                 </div>
 

@@ -7,6 +7,12 @@
 
     <%- include("../partials/nav.ejs") %>
 
+    <% if (typeof errors != 'undefined') { %>
+        <% for (error of errors) { %>
+        <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
+        <% } %>
+    <% } %>
+
     <div>
         <div class="container" style="margin-top: 40px;">
             <div class="row">
