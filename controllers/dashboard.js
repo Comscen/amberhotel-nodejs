@@ -126,3 +126,84 @@ exports.handleAddRoomForm = [
         }
     }
 ]
+
+exports.showEditRoomForm = async (req, res) => {
+    if (!req.session.logged) {
+        return res.redirect('/login')
+    }
+    if (typeof req.session.business == 'undefined') {
+        return res.render('index.ejs', { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
+    }
+
+    await Room.findOne({_id: req.params.id, hotel: req.session.userId}).lean().exec().then(result =>{
+        if(result != null){
+            return res.render('dashboard/editRoom.ejs', {room: result, session: req.session })
+        }
+        return res.render('dashboard/dashboard.ejs', {session: req.session, errors: [{msg: 'Something went wrong test'}] })
+    }).catch(error => console.log(`Error during hotel rooms query: ${error}`))
+
+}
+
+exports.handleEditRoomForm = [
+    // Room name - letters, numbers and '-' sign ex. Two-person room
+    body('name').trim()
+        .matches(/^[^\\W]{0}[\p{L}\d\s\-0-9]{0,}$/u).withMessage('Name can contain alphanumeric characters, "&", spaces and "-"!')
+        .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
+    // Description - letters, numbers, ',' and '.', 
+    body('description').trim()
+        .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
+    // Price - numbers only
+    body('price').trim()
+        .notEmpty().withMessage('Price cannot be empty!')
+        .isNumeric().withMessage('Price has to be a number!')
+        .custom(price => {
+            if(parseInt(price) < 0) return Promise.reject('Price cannot be lower than zero!')
+            return Promise.resolve('')
+        })
+        .escape(),
+    // Beds - numbers only
+    body('beds').trim()
+        .notEmpty().withMessage('Number of beds cannot be empty!')
+        .isNumeric().withMessage('Number of beds has to be a number')
+        .custom(beds => {
+            if (parseInt(beds) < 1) {
+                return Promise.reject('You need to specify atleast one bed in your room!');
+            } 
+            return Promise.resolve('')
+        })
+        .escape(),
+    // Capacity - numbers only
+    body('capacity').trim()
+        .notEmpty().withMessage('Number of people cannot be empty!')
+        .isNumeric().withMessage('Number of people has to be a number!')
+        .custom(capacity => {
+            if(parseInt(capacity) < 1) return Promise.reject('Number of people in a room has to be atleast 1')
+            return Promise.resolve('')
+        })
+        .escape(),
+    // Standard - select one menu
+    body('standard').trim()
+        .isIn(['Standard', 'Exclusive', 'Deluxe', 'Premium']).withMessage('Invalid standard!')
+        .escape(),
+    // Photos - array of URLs
+    // body('photos').trim()
+        // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
+    // Check in and check out - time
+    body('checkIn').trim()
+        .escape(),
+    body('checkOut').trim()
+        .escape(),
+
+    async (req, res) => {
+        if (!req.session.logged) {
+            return res.redirect('/login')
+        }
+        if (typeof req.session.business == 'undefined') {
+            return res.render(`index.ejs`, { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
+        }
+
+        const errors = validationResult(req).array()
+       
+    }
+
+]
