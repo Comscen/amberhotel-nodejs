@@ -43,7 +43,7 @@
                 <% for (room of rooms) { %>
                     <tr>
                         <td>
-                            <a href="/listing/rooms/<%= room._id %>">
+                            <a href="/listing/rooms/<%= room._id %>"></a>
                                 <% if (typeof room.photos != 'undefined' && typeof room.photos[0] != 'undefined') { %>
                                     <img src="<%= room.photos[0] %>" style="width: 140px;"/>
                                 <% } else { %>
@@ -56,7 +56,7 @@
                         <td><%= room.standard %></td>
                         <td>€<%= room.price %></td>
                         <td>
-                            <button type="button" class="btn btn-warning"><i class="icon ion-edit"></i></button>
+                            <button type="button" class="btn btn-warning" ><a href="/dashboard/edit/<%= room._id %>"/><i class="icon ion-edit"></i></button>
                             <button type="button" class="btn btn-danger" ><i class="icon ion-android-delete"></i></i></button>
                         </td>
                     </tr>
