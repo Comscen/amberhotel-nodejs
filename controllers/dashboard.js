@@ -13,7 +13,7 @@ exports.showDashboard = async (req, res) => {
         if(results.length > 0){
             return res.render('dashboard/dashboard.ejs', {rooms: results, session: req.session })
         }
-        return res.render('dashboard/dashboard.ejs', {session: req.session, errors: [{msg: 'Something went wrong'}] })
+        return res.render('dashboard/dashboard.ejs', {session: req.session})
     }).catch(error => console.log(`Error during hotel rooms query: ${error}`))
     
 }
@@ -117,7 +117,9 @@ exports.handleAddRoomForm = [
                     console.log(`Error saving room: ${error}`)
                     return res.render('dashboard/dashboard.ejs', { errors: [{ msg: 'There was an error adding the room' }], session: req.session })
                 }
-                return res.render('dashboard/dashboard.ejs', { messages: [{ msg: 'You have successfully added the room' }], session: req.session })
+                Room.find({hotel: req.session.userId}).lean().exec().then(rooms => {
+                    return res.render('dashboard/dashboard.ejs', {rooms: rooms, messages: [{ msg: 'You have successfully added the room' }], session: req.session })
+                })
             })
         } else {
             return res.render('dashboard/addRoom.ejs', { errors: errors, session: req.session })

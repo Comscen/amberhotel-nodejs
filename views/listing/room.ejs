@@ -26,10 +26,26 @@
 
             <div class="row" style="margin-top: 30px;">
                 <div class="col-md-12 text-center account-info">
+
                     <h3 style="margin-top: 10px;"><%= room.name %></h3>
-                    <a href="/account/<%= room.hotel._id %>">
-                        <p><%= room.hotel.name %> <span class="badge badge-primary">4.2<img src="/img/star.png" style="width: 10px;margin-top: -4px;"></span></p>
-                    </a>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="/account/<%= room.hotel._id %>">
+                                <div class="row align-items-center justify-content-center">
+                                        <% if (typeof room.hotel.photo != 'undefined') { %>
+                                            <img class="border rounded-circle border-light shadow account-photo" src="<%= room.hotel.photo %>" style="width: 50px;height: 50px;">
+                                        <% } else { %>
+                                            <img class="border rounded-circle border-light shadow account-photo" src="/img/no_picture.png" style="width: 50px;height: 50px;">
+                                        <% } %>
+                                        <h5><%= room.hotel.name %> <span class="badge" style="background-color:rgb(224,116,37);color:white">4.2<img src="/img/star.png" style="width: 10px;"></span></h5>
+                                </div>
+                                
+                                
+                                <!-- <p><%= room.hotel.city %>, <%= room.hotel.country %></p> -->
+                            </a>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-10" style="text-align: center; float: none; margin: 0 auto;">
@@ -38,6 +54,8 @@
                     </div>
 
                     <br>
+
+                   
 
                     <div class="row">
                         <div class="col-md-12 text-center">
