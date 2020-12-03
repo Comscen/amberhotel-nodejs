@@ -1,6 +1,7 @@
 /*jshint globalstrict: true, devel: true, node: true*/
 'use strict';
 
+require('dotenv').config()
 var express = require('express')
 var app = express()
 var path = require('path')
