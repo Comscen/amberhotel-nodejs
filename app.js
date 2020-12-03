@@ -12,7 +12,7 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
 app.use(session({
-    secret: 'amber-secret', 
+    secret: process.env.SESSION_SECRET, 
     resave: false, 
     saveUninitialized: false,
     cookie: { maxAge: 60 * 60 * 1000 },
