@@ -2,22 +2,27 @@ function filterHotels() {
     let hotels = document.getElementsByName('hotel')
     let city = document.getElementById('city').value
     let country = document.getElementById('country').value
+    let rating = document.getElementById('rating').value
     
     resetHotels()
-    if (city !== '') {
-        for (hotel of hotels) {
+    for(let hotel of hotels) {
+        if (city !== '') {
             if (hotel.id.split(':')[0] !== city)
                 hotel.style = 'display: none;'
         }
-    }
 
-    if (country !== '') {
-        for (hotel of hotels) {
+        if (country !== '') {
             if (hotel.id.split(':')[1] !== country)
                 hotel.style = 'display: none;'
         }
-    }
 
+        console.log(parseFloat(hotel.querySelector("span[name='rating']").innerText));
+        console.log(document.getElementById('rating').value);
+        if (parseFloat(hotel.querySelector("span[name='rating']").innerText) < parseFloat(document.getElementById('rating').value)) {
+            hotel.style = 'display: none;'
+        }
+
+    }
 }
 
 function resetHotels() {

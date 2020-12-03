@@ -9,7 +9,9 @@ exports.showHotels = async (req, res) => {
 
 exports.showRooms = async (req, res) => {
     await Room.find().populate('hotel').lean().exec().then(rooms => {
-        return res.render('listing/rooms.ejs', { rooms: rooms, session: req.session })
+        if (rooms.length > 0)
+            return res.render('listing/rooms.ejs', { rooms: rooms, session: req.session })
+        return res.render('listing/rooms.ejs', {session: req.session })
     }).catch(err => console.log(`CRITICAL ERROR DURING LISTING ROOMS:\n${err}`))
 }
 
