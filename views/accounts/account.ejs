@@ -6,6 +6,7 @@
 <body>
 
     <%- include("../partials/nav.ejs") %>
+    <link rel="stylesheet" href="/css/room-listing.css">
 
     <div class="container">
             
@@ -109,6 +110,43 @@
                         </div>
                     </div>
                 <% } %>
+
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-12">
+                        <% if (typeof rooms != 'undefined') { %>
+                            <div id="rooms" class="row product-list justify-content-center">
+                                <%- include("../partials/roomListing.ejs") %>
+                            </div>
+                        <% } else if (typeof user.admin == 'undefined') {%>
+                            <div class="row">
+                                <div class="col-md-12 text-center"><p class="alert" style="font-size: 20px;color:white;background-color: rgb(224,116,37);">This hotel does not have any rooms in our offer <i class="icon ion-sad-outline"></i> </p></div>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- <div class="col-md-12" style="max-width: 40%;">
+                        <div class="col" style="margin-top: 16px;border-style: none;border-color: rgba(255,255,255,0);border-radius: 20px;margin-right: 0px;">
+                            <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
+                                <div class="card-body">
+                                    <h4 class="card-title">Comment 1</h4>
+                                    <blockquote class="blockquote">
+                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                                        <footer class="blockquote-footer">Michał Tangri</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                            <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
+                                <div class="card-body">
+                                    <h4 class="card-title">Comment 2</h4>
+                                    <blockquote class="blockquote">
+                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                                        <footer class="blockquote-footer">Random user</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
             </div>
             
         <% } %>

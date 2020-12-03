@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt')
 var postalCodes = require('postal-codes-js')
 var User = require('../models/user')
 var Hotel = require('../models/hotel')
+var Room = require('../models/room')
 
 async function emailUnavailable(req) {
     var emailIsUnavailable = false
@@ -164,7 +165,14 @@ exports.showAccount = async (req, res) => {
             results[0].joined = results[0].joined.toISOString().substr(0, 10)
             return res.render('accounts/account.ejs', { user: results[0], session: req.session })
         } else if (results[1] !== null) {
-            return res.render('accounts/account.ejs', { user: results[1], session: req.session })
+
+            Room.find({hotel: req.params.id}).populate('hotel').lean().exec().then(rooms => {
+                if (rooms.length > 0) {
+                    return res.render('accounts/account.ejs', { user: results[1], rooms: rooms, session: req.session })
+                }
+                return res.render('accounts/account.ejs', { user: results[1], session: req.session })
+            })
+
         } else {
             return res.render('accounts/account.ejs', { errors: [{ msg: 'Account ID is invalid!' }], user: {}, session: req.session })
         }
