@@ -49,12 +49,12 @@ function filterRooms() {
         let ratingMin = document.getElementById('rating').value;
         
         if (priceMin !== '') {
-            if (roomInfo["price"] < priceMin)
+            if (parseInt(roomInfo["price"]) < parseInt(priceMin))
                 hideRoom(room);
         }
 
         if (priceMax !== '') {
-            if (roomInfo["price"] > priceMax)
+            if (parseInt(roomInfo["price"]) > parseInt(priceMax))
                 hideRoom(room);
         }
 

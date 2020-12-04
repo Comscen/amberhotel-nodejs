@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var { nanoid } = require('nanoid')
 
 const ReservationSchema = new mongoose.Schema({
-    _id: { type: String, default: () => nanoid(10), unique: true },
+    _id: { type: String, default: () => nanoid(10)},
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     totalPrice: { type: Number, required: true },
