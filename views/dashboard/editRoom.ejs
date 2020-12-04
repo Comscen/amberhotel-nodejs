@@ -36,7 +36,7 @@
                 <!-- FORM -->
                 <div id="multistep-start-row" class="row">
                     <div id="multistep-start-column" class="col-12 col-lg-8 m-auto">
-                        <form id="main-form" method="POST" class="multisteps-form__form">
+                        <form id="main-form" method="POST" class="multisteps-form__form" onsubmit = "return validateForm(this)">
     
                             <!-- FIRST FORM -->
                             <div id="single-form-next" class="multisteps-form__panel shadow p-4 rounded bg-white js-active" data-animation="scaleIn">
@@ -47,11 +47,13 @@
                                     <div id="input-grp-double" class="form-row mt-4">
                                         <div class="col-12 col-sm-6">
                                             <label for="roomName">Room name</label>
-                                            <input name="name" class="form-control multisteps-form__input" type="text" placeholder="Room name" id="roomName" required value="<%= room.name %>">
+                                            <input name="name" class="form-control multisteps-form__input" type="text" placeholder="Room name" id="roomName" required value="<%= room.name %>" oninput="isFieldValid(this)">
+                                            <small id="nameError" class="form-text text-muted" style="display: none;">Max 64 characters(- . , permitted).</small>
                                         </div>
                                         <div class="col-12 col-sm-6 mt-4 mt-sm-0">
                                             <label for="">Price per night in €</label>
-                                            <input name="price" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Price per night in €" id="price" required value="<%= room.price %>">
+                                            <input name="price" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Price per night in €" id="price" oninput="isFieldValid(this)" required value="<%= room.price %>">
+                                            <small id="priceError" class="form-text text-muted" style="display: none;">Price can only contain numbers.</small>
                                         </div>
                                     </div>
     
@@ -60,7 +62,8 @@
                                         <div class="col-12">
                                             <label for="description">Description</label>
                                             <label id="lenLabel" style="float:right;">900 characters left</label>
-                                            <textarea maxlength="900" class="form-control" style="height:280px; resize: none;" oninput="checkLength(this)" placeholder="Description" name="description" id="description" ><%= room.description %></textarea>
+                                            <textarea maxlength="900" class="form-control" style="height:280px; resize: none;" oninput="checkLength(this); isFieldValid(this)" placeholder="Description" name="description" id="description" ><%= room.description %></textarea>
+                                            <small id="descriptionError" class="form-text text-muted" style="display: none;">Max 900 characters (- & . , ! ? ' " permitted).</small>
                                         </div>
                                     </div>
     
@@ -80,11 +83,13 @@
                                     <div id="input-grp-double-1" class="form-row mt-4">
                                         <div class="col-12 col-sm-6">
                                             <label for="beds">Numer of beds</label>
-                                            <input name="beds" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Number of beds" id="beds" required value="<%= room.beds %>">
+                                            <input name="beds" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" oninput="isFieldValid(this)" type="number" placeholder="Number of beds" id="beds" required value="<%= room.beds %>">
+                                            <small id="bedsError" class="form-text text-muted" style="display: none;">Number of beds can only contain numbers.</small>
                                         </div>
                                         <div class="col-12 col-sm-6 mt-4 mt-sm-0">
                                             <label for="capacity">Capacity</label>
-                                            <input name="capacity" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Capacity" id="capacity" required value="<%= room.capacity %>">
+                                            <input name="capacity" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" oninput="isFieldValid(this)" type="number" placeholder="Capacity" id="capacity" required value="<%= room.capacity %>">
+                                            <small id="capacityError" class="form-text text-muted" style="display: none;">Number of people can only contain numbers.</small>
                                         </div>
                                     </div>
     
@@ -144,7 +149,7 @@
                                                             <tr>
                                                                 <td style="width: 250px;">Photo URL</td>
                                                                 <td>
-                                                                    <input name="photos[i]" type="text" class="form-control multisteps-form__input"  placeholder="Link to a photo" required value="<%= room.photos[i] %>">
+                                                                    <input name="photos[<%= i %>]" type="text" class="form-control multisteps-form__input"  placeholder="Link to a photo" required value="<%= room.photos[i] %>">
                                                                 </td>
                                                             </tr>
                                                         <% } %>
@@ -320,6 +325,7 @@
     <% } %>
 
     <script type="application/javascript">
+        window.onload = checkLength(document.getElementById('description'));
         function checkLength(textarea) {
             document.getElementById('lenLabel').innerText = `${900 - textarea.value.length} characters left`
         }
@@ -327,6 +333,7 @@
 
     <script type="application/javascript" src="/js/addRoomForm.js"></script>
     <script type="application/javascript" src="/js/hotelPhotos.js"></script>
+    <script type="application/javascript" src="/js/roomValidation.js"></script>
 
     <%- include("../partials/footer.ejs") %>
     <%- include("../partials/scripts.ejs") %>

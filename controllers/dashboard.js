@@ -8,14 +8,14 @@ exports.showDashboard = async (req, res) => {
     if (typeof req.session.business == 'undefined') {
         return res.render('index.ejs', { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
     }
-    
-    await Room.find({hotel: req.session.userId}).lean().exec().then(results =>{
-        if(results.length > 0){
-            return res.render('dashboard/dashboard.ejs', {rooms: results, session: req.session })
+
+    await Room.find({ hotel: req.session.userId }).lean().exec().then(results => {
+        if (results.length > 0) {
+            return res.render('dashboard/dashboard.ejs', { rooms: results, session: req.session })
         }
-        return res.render('dashboard/dashboard.ejs', {session: req.session})
+        return res.render('dashboard/dashboard.ejs', { session: req.session })
     }).catch(error => console.log(`Error during hotel rooms query: ${error}`))
-    
+
 }
 
 exports.showAddRoomForm = async (req, res) => {
@@ -36,7 +36,7 @@ exports.handleAddRoomForm = [
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
 
     // Description - letters, numbers, ',' and '.', 
-    body('description').trim()
+    body('description').trim().isLength({max:900}).withMessage('Description cannot be longer than 900 characters')
         .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
 
     // Price - numbers only
@@ -44,7 +44,7 @@ exports.handleAddRoomForm = [
         .notEmpty().withMessage('Price cannot be empty!')
         .isNumeric().withMessage('Price has to be a number!')
         .custom(price => {
-            if(parseInt(price) < 0) return Promise.reject('Price cannot be lower than zero!')
+            if (parseInt(price) < 0) return Promise.reject('Price cannot be lower than zero!')
             return Promise.resolve('')
         })
         .escape(),
@@ -56,7 +56,7 @@ exports.handleAddRoomForm = [
         .custom(beds => {
             if (parseInt(beds) < 1) {
                 return Promise.reject('You need to specify atleast one bed in your room!');
-            } 
+            }
             return Promise.resolve('')
         })
         .escape(),
@@ -66,7 +66,7 @@ exports.handleAddRoomForm = [
         .notEmpty().withMessage('Number of people cannot be empty!')
         .isNumeric().withMessage('Number of people has to be a number!')
         .custom(capacity => {
-            if(parseInt(capacity) < 1) return Promise.reject('Number of people in a room has to be atleast 1')
+            if (parseInt(capacity) < 1) return Promise.reject('Number of people in a room has to be atleast 1')
             return Promise.resolve('')
         })
         .escape(),
@@ -78,13 +78,13 @@ exports.handleAddRoomForm = [
 
     // Photos - array of URLs
     // body('photos').trim()
-        // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
-        
+    // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
+
     // Check in and check out - time
-    body('checkIn').trim()
+    body('checkIn').trim().notEmpty()
         .escape(),
-        
-    body('checkOut').trim()
+
+    body('checkOut').trim().notEmpty()
         .escape(),
 
     async (req, res) => {
@@ -117,8 +117,8 @@ exports.handleAddRoomForm = [
                     console.log(`Error saving room: ${error}`)
                     return res.render('dashboard/dashboard.ejs', { errors: [{ msg: 'There was an error adding the room' }], session: req.session })
                 }
-                Room.find({hotel: req.session.userId}).lean().exec().then(rooms => {
-                    return res.render('dashboard/dashboard.ejs', {rooms: rooms, messages: [{ msg: 'You have successfully added the room' }], session: req.session })
+                Room.find({ hotel: req.session.userId }).lean().exec().then(rooms => {
+                    return res.render('dashboard/dashboard.ejs', { rooms: rooms, messages: [{ msg: 'You have successfully added the room' }], session: req.session })
                 })
             })
         } else {
@@ -135,11 +135,11 @@ exports.showEditRoomForm = async (req, res) => {
         return res.render('index.ejs', { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
     }
 
-    await Room.findOne({_id: req.params.id, hotel: req.session.userId}).lean().exec().then(result =>{
-        if(result != null){
-            return res.render('dashboard/editRoom.ejs', {room: result, session: req.session })
+    await Room.findOne({ _id: req.params.id, hotel: req.session.userId }).lean().exec().then(result => {
+        if (result != null) {
+            return res.render('dashboard/editRoom.ejs', { room: result, session: req.session })
         }
-        return res.render('dashboard/dashboard.ejs', {session: req.session, errors: [{msg: 'Something went wrong test'}] })
+        return res.render('dashboard/dashboard.ejs', { session: req.session, errors: [{ msg: 'Something went wrong test' }] })
     }).catch(error => console.log(`Error during hotel rooms query: ${error}`))
 
 }
@@ -150,14 +150,14 @@ exports.handleEditRoomForm = [
         .matches(/^[^\\W]{0}[\p{L}\d\s\-0-9]{0,}$/u).withMessage('Name can contain alphanumeric characters, "&", spaces and "-"!')
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
     // Description - letters, numbers, ',' and '.', 
-    body('description').trim()
+    body('description').trim().isLength({max:900}).withMessage('Description cannot be longer than 900 characters')
         .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
     // Price - numbers only
     body('price').trim()
         .notEmpty().withMessage('Price cannot be empty!')
         .isNumeric().withMessage('Price has to be a number!')
         .custom(price => {
-            if(parseInt(price) < 0) return Promise.reject('Price cannot be lower than zero!')
+            if (parseInt(price) < 0) return Promise.reject('Price cannot be lower than zero!')
             return Promise.resolve('')
         })
         .escape(),
@@ -168,7 +168,7 @@ exports.handleEditRoomForm = [
         .custom(beds => {
             if (parseInt(beds) < 1) {
                 return Promise.reject('You need to specify atleast one bed in your room!');
-            } 
+            }
             return Promise.resolve('')
         })
         .escape(),
@@ -177,7 +177,7 @@ exports.handleEditRoomForm = [
         .notEmpty().withMessage('Number of people cannot be empty!')
         .isNumeric().withMessage('Number of people has to be a number!')
         .custom(capacity => {
-            if(parseInt(capacity) < 1) return Promise.reject('Number of people in a room has to be atleast 1')
+            if (parseInt(capacity) < 1) return Promise.reject('Number of people in a room has to be atleast 1')
             return Promise.resolve('')
         })
         .escape(),
@@ -187,11 +187,11 @@ exports.handleEditRoomForm = [
         .escape(),
     // Photos - array of URLs
     // body('photos').trim()
-        // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
+    // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
     // Check in and check out - time
-    body('checkIn').trim()
+    body('checkIn').trim().notEmpty()
         .escape(),
-    body('checkOut').trim()
+    body('checkOut').trim().notEmpty()
         .escape(),
 
     async (req, res) => {
@@ -203,7 +203,32 @@ exports.handleEditRoomForm = [
         }
 
         const errors = validationResult(req).array()
-       
-    }
 
+        await Room.findOne({ _id: req.params.id, hotel: req.session.userId }, (err, result) => {
+            if (errors.length == 0) {
+                if (result != null) {
+                    result.name = req.body.name
+                    result.description = req.body.description
+                    result.price = req.body.price
+                    result.beds = req.body.beds
+                    result.capacity = req.body.capacity
+                    result.standard = req.body.standard
+                    result.checkInOut.checkIn = req.body.checkIn
+                    result.checkInOut.checkOut = req.body.checkOut
+
+                    result.photos = []
+                    if (typeof req.body.photos != 'undefined') {
+                        for (photo of req.body.photos) {
+                            if (photo.trim() !== '') {
+                                result.photos.push(photo)
+                            }
+                        }
+                    }
+                    result.save()
+                    return res.render('dashboard/editRoom.ejs', { messages: [{ msg: 'Succesfully saved changes' }], session: req.session, room: result })
+                }
+                return res.render('dashboard/editRoom.ejs', { errors: [{ msg: 'Something went wrong' }], session: req.session, room: result })
+            }
+        }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT ROOM PAGE: \n${err}`))
+    }
 ]
