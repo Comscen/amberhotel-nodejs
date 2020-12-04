@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var { nanoid } = require('nanoid')
 
 const ReservationSchema = new mongoose.Schema({
-    _id: { type: String, default: () => nanoid(10), unique: true },
+    _id: { type: String, default: () => nanoid(10)},
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     totalPrice: { type: Number, required: true },
@@ -15,8 +15,8 @@ const ReservationSchema = new mongoose.Schema({
         ccExpDate:{type: String, required:true},
         holderName:{type: String, required: true}
     },
-    _roomId: { type: String, ref: 'Room', required: true },
-    _userId: { type: String, ref: 'User', required: true }
+    room: { type: String, ref: 'Room', required: true },
+    user: { type: String, ref: 'User', required: true }
 })
 
 const Reservation = mongoose.model('Reservation', ReservationSchema)

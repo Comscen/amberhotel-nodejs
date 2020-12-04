@@ -1,6 +1,6 @@
 {
 	"name": "amber-hotel",
-	"version": "0.8.6",
+	"version": "0.9.3",
 	"description": "Amber Hotel",
 	"main": "app.js",
 	"scripts": {
@@ -21,13 +21,15 @@
 	"dependencies": {
 		"bcrypt": "^5.0.0",
 		"body-parser": "^1.10.1",
+		"calendar": "^0.1.1",
 		"connect-mongo": "^3.2.0",
+		"dotenv": "^8.2.0",
 		"ejs": "^2.3.1",
 		"express": "^4.11.0",
 		"express-session": "^1.17.1",
-		"express-validator": "^6.6.1",
-		"mongoose": "^5.10.14",
-		"nanoid": "^3.1.16",
+		"express-validator": "^6.7.0",
+		"mongoose": "^5.11.3",
+		"nanoid": "^3.1.20",
 		"postal-codes-js": "^2.5.2",
 		"serve-favicon": "^2.2.0"
 	},

@@ -140,18 +140,7 @@ exports.handleHotelRegisterForm = [
                 city: req.body.city,
                 address: req.body.address,
                 postalCode: postalCode,
-                webPage: undefined,
-                photo: undefined
             })
-            
-            let webPage = req.body.web
-            let photo = req.body.photo
-
-            if (webPage !== '')
-                newHotel.webPage = webPage
-
-            if (photo !== '')
-                newHotel.photo = photo
             
             newHotel.save((error, obj) => {
                 if (error) {

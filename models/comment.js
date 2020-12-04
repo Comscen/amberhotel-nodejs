@@ -7,8 +7,8 @@ const CommentSchema = new mongoose.Schema({
     content: {type:String, required: true },
     rating: {type: Number, max: 5, min:1, required: true },
     byUser: Boolean,
-    _userId: { type: String, ref: 'User', required: true },
-    _hotelId: { type: String, ref: 'Hotel', required: true }
+    user: { type: String, ref: 'User', required: true },
+    hotel: { type: String, ref: 'Hotel', required: true }
 })
 
 const Comment = mongoose.Model('Comment', CommentSchema)

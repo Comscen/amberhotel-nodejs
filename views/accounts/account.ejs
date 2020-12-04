@@ -6,6 +6,7 @@
 <body>
 
     <%- include("../partials/nav.ejs") %>
+    <link rel="stylesheet" href="/css/room-listing.css">
 
     <div class="container">
             
@@ -32,44 +33,45 @@
                     <h3><%= user.name %> <%= user.surname %></h3>
 
                     <% if (typeof session.logged != 'undefined' && session.userId === user._id) { %>
-                        <a class="btn btn-primary btn-sm float-right" href="/account/<%= user._id %>/edit" role="button" style="background: rgb(224,116,37);border-color:white">Edit profile</a>
+                        <a class="btn btn-primary btn-sm float-right" href="/account/<%= user._id %>/edit" role="button" style="background: rgb(224,116,37);border-color:white">Edit profile <i class="icon ion-edit"></i></a>
                     <% } %>
 
                     <div class="table-responsive text-left">
                         <table class="table">
                             <tbody>
                                 <tr>
-                                    <td style="width: 200px;">E-mail</td>
+                                    <td style="width: 200px;"><i class="icon ion-email"></i> E-mail</i></td>
                                     <td><%= user.email %></td>
                                 </tr>
     
                                 <!-- Fields for private accounts -->
                                 <% if (typeof user.admin != 'undefined') { %>
                                     <tr>
-                                        <td>Joined</td>
+                                        <td><i class="icon ion-person-add"></i> Joined</td>
                                         <td><%= user.joined %></td>
                                     </tr>
     
                                     <% if (typeof user.location != 'undefined') { %>
                                         <tr>
-                                            <td>Location</td>
+                                            <td><i class="icon ion-android-home"></i> Location</td>
                                             <td><%= user.location %></td>
                                         </tr>
                                     <% } %>
+                                <!-- Fields for business accounts -->
                                 <% } else {%>
                                     <tr>
-                                        <td>City</td>
+                                        <td><i class="icon ion-android-globe"></i> City</i></td>
                                         <td><%= user.city %>, <%= user.country %></td>
                                     </tr>
 
                                     <tr>
-                                        <td>Address</td>
+                                        <td><i class="icon ion-android-pin"></i> Address</i></td>
                                         <td><%= user.address %>, <%= user.postalCode %></td>
                                     </tr>
 
                                     <% if (typeof user.webPage != 'undefined') { %>
                                         <tr>
-                                            <td>Homepage</td>
+                                            <td><i class="icon ion-ios-world-outline"></i> Homepage</td>
                                             <td><%= user.webPage %></td>
                                         </tr>
                                     <% } %>
@@ -108,6 +110,43 @@
                         </div>
                     </div>
                 <% } %>
+
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-12">
+                        <% if (typeof rooms != 'undefined') { %>
+                            <div id="rooms" class="row product-list justify-content-center">
+                                <%- include("../partials/roomListing.ejs") %>
+                            </div>
+                        <% } else if (typeof user.admin == 'undefined') {%>
+                            <div class="row">
+                                <div class="col-md-12 text-center"><p class="alert" style="font-size: 20px;color:white;background-color: rgb(224,116,37);">This hotel does not have any rooms in our offer <i class="icon ion-sad-outline"></i> </p></div>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- <div class="col-md-12" style="max-width: 40%;">
+                        <div class="col" style="margin-top: 16px;border-style: none;border-color: rgba(255,255,255,0);border-radius: 20px;margin-right: 0px;">
+                            <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
+                                <div class="card-body">
+                                    <h4 class="card-title">Comment 1</h4>
+                                    <blockquote class="blockquote">
+                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                                        <footer class="blockquote-footer">Michał Tangri</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                            <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
+                                <div class="card-body">
+                                    <h4 class="card-title">Comment 2</h4>
+                                    <blockquote class="blockquote">
+                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                                        <footer class="blockquote-footer">Random user</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
             </div>
             
         <% } %>

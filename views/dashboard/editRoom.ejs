@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+
+<%- include("../partials/header.ejs") %>
+
+<body>
+
+    <%- include("../partials/nav.ejs") %>
+    <link rel="stylesheet" href="/css/add-room-form.css">
+
+    <% if (typeof errors != 'undefined') { %>
+                    <% for (error of errors) { %>
+                    <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
+                    <% } %>
+                <% } %>
+
+    <% if (typeof room != 'undefined') { %>
+
+        <section>
+            <div id="multple-step-form-n" class="container overflow-hidden" style="margin-top: 0px;margin-bottom: 10px;padding-bottom: 300px;padding-top: 57px;">
+                <!-- PROGRESS BAR -->
+                <div id="progress-bar-button" class="multisteps-form">
+                    <div class="row">
+                        <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+                            <div class="multisteps-form__progress">
+                                <a class="btn multisteps-form__progress-btn js-active" role="button" title="Basic info" style="color: rgb(224,116,37);">Basic info</a>
+                                <a class="btn multisteps-form__progress-btn" role="button" title="Details">Details</a>
+                                <a class="btn multisteps-form__progress-btn" role="button" title="Photos">Photos</a>
+                                <a class="btn multisteps-form__progress-btn" role="button" title="Features">Features&nbsp;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /PROGRESS BAR -->
+    
+                <!-- FORM -->
+                <div id="multistep-start-row" class="row">
+                    <div id="multistep-start-column" class="col-12 col-lg-8 m-auto">
+                        <form id="main-form" method="POST" class="multisteps-form__form">
+    
+                            <!-- FIRST FORM -->
+                            <div id="single-form-next" class="multisteps-form__panel shadow p-4 rounded bg-white js-active" data-animation="scaleIn">
+                                <h3 class="text-center multisteps-form__title">Basic info</h3>
+                                <div id="form-content" class="multisteps-form__content">
+    
+                                    <!-- NAME AND PRICE -->
+                                    <div id="input-grp-double" class="form-row mt-4">
+                                        <div class="col-12 col-sm-6">
+                                            <label for="roomName">Room name</label>
+                                            <input name="name" class="form-control multisteps-form__input" type="text" placeholder="Room name" id="roomName" required value="<%= room.name %>">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                            <label for="">Price per night in €</label>
+                                            <input name="price" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Price per night in €" id="price" required value="<%= room.price %>">
+                                        </div>
+                                    </div>
+    
+                                    <!-- DESCRIPTION -->
+                                    <div id="input-grp-single" class="form-row mt-4">
+                                        <div class="col-12">
+                                            <label for="description">Description</label>
+                                            <label id="lenLabel" style="float:right;">900 characters left</label>
+                                            <textarea maxlength="900" class="form-control" style="height:280px; resize: none;" oninput="checkLength(this)" placeholder="Description" name="description" id="description" ><%= room.description %></textarea>
+                                        </div>
+                                    </div>
+    
+                                    <div id="next-button" class="button-row d-flex mt-4">
+                                        <button class="btn btn ml-auto js-btn-next" type="button" title="Next" style="background: rgb(224,116,37);color:white">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /FIRST FORM -->
+    
+                            <!-- SECOND FORM -->
+                            <div id="single-form-next-prev" class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                                <h3 class="text-center multisteps-form__title">Details</h3>
+                                <div id="form-content-1" class="multisteps-form__content">
+    
+                                    <!-- BEDS AND CAPACITY -->
+                                    <div id="input-grp-double-1" class="form-row mt-4">
+                                        <div class="col-12 col-sm-6">
+                                            <label for="beds">Numer of beds</label>
+                                            <input name="beds" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Number of beds" id="beds" required value="<%= room.beds %>">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                            <label for="capacity">Capacity</label>
+                                            <input name="capacity" class="form-control multisteps-form__input" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" type="number" placeholder="Capacity" id="capacity" required value="<%= room.capacity %>">
+                                        </div>
+                                    </div>
+    
+                                    <!-- CHECK IN AND CHECK OUT -->
+                                    <div id="input-grp-single-1-3" class="form-row mt-4">
+                                        <div class="col-12 col-sm-6">
+                                            <label for="checkIn">Check in after</label>
+                                            <input type="time" name="checkIn" id="checkIn" class="form-control multisteps-form__input" value="<%= room.checkInOut.checkIn %>">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                            <label for="checkOut">Check out before</label>
+                                            <input type="time" name="checkOut" id="checkOut" class="form-control multisteps-form__input" value="<%= room.checkInOut.checkOut %>">
+                                        </div>
+                                    </div>
+    
+                                     <!-- STANDARD -->
+                                     <div id="input-grp-double-1-2" class="form-row mt-4">
+                                        <div class="col-12 col-sm-12">
+                                            <label for="standard">Room standard</label>
+                                            <select name="standard" class="form-control" style="width: 100%;text-align: left;" id="standard" required>
+                                                <option value="Standard">Standard</option>
+                                                <option value="Exclusive">Exclusive</option>
+                                                <option value="Premium">Premium</option>
+                                                <option value="Deluxe">Deluxe</option>  
+                                            </select>
+                                        </div>
+                                    </div>
+    
+                                    <div id="next-prev-buttons" class="button-row d-flex mt-4">
+                                        <button class="btn btn js-btn-prev" type="button" title="Prev" style="background: rgb(224,116,37);color:white">Back</button>
+                                        <button class="btn btn ml-auto js-btn-next" type="button" title="Next" style="background: rgb(224,116,37);color:white">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /SECOND FORM -->
+    
+                            <!-- THIRD FORM -->
+                            <div id="single-form-next-prev-1" class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                                <h3 class="text-center multisteps-form__title">Photos</h3>
+                                <p class="text-center multisteps-form__content">Add up to 8 photos for your room</p>
+                                <div id="form-content-2" class="multisteps-form__content">
+                                    <div id="input-grp-double-2" class="form-row mt-4">
+                                        <div class="col-12 col-sm-6" style="text-align: center;">
+                                            <input type="button" onclick="createPhotoRow()" value="Add row"  class="btn btn-primary btn-sm float-right" style="background: rgb(224,116,37); margin-right: 5px;margin-bottom: 10px; border-color: white;">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0" style="text-align: center;">
+                                            <input type="button" onclick="removePhotoRow()" value="Remove row"  class="btn btn-primary btn-sm float-left" style="background: rgb(224,116,37); margin-right: 5px; border-color: white;">
+                                        </div>
+                                    </div>
+                                    <div id="input-grp-single-2" class="form-row mt-4">
+                                        <div class="col-12">
+                                            <div class="table-responsive text-left"></div>
+                                            <table class="table">
+                                                <tbody id="photosTable">
+                                                    <% if (typeof room.photos != 'undefined'  && room.photos.length > 0) { %>
+                                                        <% for (let i = 0; i < room.photos.length; i++) { %>
+                                                            <tr>
+                                                                <td style="width: 250px;">Photo URL</td>
+                                                                <td>
+                                                                    <input name="photos[i]" type="text" class="form-control multisteps-form__input"  placeholder="Link to a photo" required value="<%= room.photos[i] %>">
+                                                                </td>
+                                                            </tr>
+                                                        <% } %>
+                                                    <% } else { %>
+                                                        <tr>
+                                                            <td style="width: 250px;">Photo URL</td>
+                                                            <td>
+                                                                <input name="photos[0]" type="text" class="form-control multisteps-form__input"  placeholder="Link to a photo" required>
+                                                            </td>
+                                                        </tr>
+                                                    <% } %>
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="next-prev-buttons-1" class="button-row d-flex mt-4">
+                                    <button class="btn js-btn-prev" type="button" title="Prev" style="background: rgb(224,116,37);color:white">Back</button>
+                                    <button class="btn btn ml-auto js-btn-next" type="button" title="Next" style="background: rgb(224,116,37);color:white">Next</button>
+                                </div>
+                            </div>
+                            <!-- /THIRD FORM -->
+                            
+                            <!-- FOURTH FORM -->
+                            <div id="single-form-next-prev-2" class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                                <h3 class="text-center multisteps-form__title">Features</h3>
+                                <div id="form-content-2" class="multisteps-form__content">
+                                    <div id="input-grp-double-3-1" class="form-row mt-4">
+                                        <div class="col-12 col-sm-12">
+                                            <table class="table">
+                                                <tr>
+                                                    <td>Free WiFi</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Free WiFi']" id="wifi-yes" value="true">
+                                                            <label class="form-check-label" for="wifi-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Free WiFi']" id="wifi-no" value="false" checked>
+                                                            <label class="form-check-label" for="wifi-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>Washing machine</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Washing machine']" id="washing-yes" value="true">
+                                                            <label class="form-check-label" for="washing-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Washing machine']" id="washing-no" value="false" checked>
+                                                            <label class="form-check-label" for="washing-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kitchen</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Kitchen']" id="kitchen-yes" value="true">
+                                                            <label class="form-check-label" for="kitchen-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Kitchen']" id="kitchen-no" value="false" checked>
+                                                            <label class="form-check-label" for="kitchen-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>Free parking</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Free parking']" id="parking-yes" value="true">
+                                                            <label class="form-check-label" for="parking-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Free parking']" id="parking-no" value="false" checked>
+                                                            <label class="form-check-label" for="parking-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>For smokers</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['For smokers']" id="smokers-yes" value="true">
+                                                            <label class="form-check-label" for="smokers-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['For smokers']" id="smokers-no" value="false" checked>
+                                                            <label class="form-check-label" for="smokers-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>TV</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['TV']" id="tv-yes" value="true">
+                                                            <label class="form-check-label" for="tv-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['TV']" id="tv-no" value="false" checked>
+                                                            <label class="form-check-label" for="tv-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pets allowed</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Pets allowed']" id="pets-yes" value="true">
+                                                            <label class="form-check-label" for="pets-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Pets allowed']" id="pets-no" value="false" checked>
+                                                            <label class="form-check-label" for="pets-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>Elevator</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Elevator']" id="elevator-yes" value="true">
+                                                            <label class="form-check-label" for="elevator-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Elevator']" id="elevator-no" value="false" checked>
+                                                            <label class="form-check-label" for="elevator-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Breakfast</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Breakfast']" id="breakfast-yes" value="true">
+                                                            <label class="form-check-label" for="breakfast-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Breakfast']" id="breakfast-no" value="false" checked>
+                                                            <label class="form-check-label" for="breakfast-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>Towels</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Towels']" id="towels-yes" value="true">
+                                                            <label class="form-check-label" for="towels-yes">Yes</label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="features['Towels']" id="towels-no" value="false" checked>
+                                                            <label class="form-check-label" for="towels-no">No</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="next-prev-buttons-2" class="button-row d-flex mt-4">
+                                    <button class="btn js-btn-prev" type="button" title="Prev" style="background: rgb(224,116,37);color:white">Back</button>
+                                    <button class="btn ml-auto" type="submit" title="Finish" style="background: rgb(224,116,37);color:white">Finish</button>
+                                </div>
+                            </div>
+                            <!-- /FOURTH FORM -->
+    
+                        </div>
+                    </div>
+                    
+                    </form>
+                </div>
+            </div>
+            <!-- /FORM -->
+        </div>
+        </section>
+
+    <% } %>
+
+    <script type="application/javascript">
+        function checkLength(textarea) {
+            document.getElementById('lenLabel').innerText = `${900 - textarea.value.length} characters left`
+        }
+    </script>
+
+    <script type="application/javascript" src="/js/addRoomForm.js"></script>
+    <script type="application/javascript" src="/js/hotelPhotos.js"></script>
+
+    <%- include("../partials/footer.ejs") %>
+    <%- include("../partials/scripts.ejs") %>
+
+</body>
+
+</html>
