@@ -166,7 +166,7 @@ exports.showAccount = async (req, res) => {
             return res.render('accounts/account.ejs', { user: results[0], session: req.session })
         } else if (results[1] !== null) {
 
-            Room.find({hotel: req.params.id}).populate('hotel').lean().exec().then(rooms => {
+            Room.find({ hotel: req.params.id }).populate('hotel').lean().exec().then(rooms => {
                 if (rooms.length > 0) {
                     return res.render('accounts/account.ejs', { user: results[1], rooms: rooms, session: req.session })
                 }
@@ -294,22 +294,32 @@ exports.handleEditPhotosForm = async (req, res) => {
         return res.redirect(`/account/${req.session.userId}`)
     }
 
+    for (let i = 0; i < req.body.photos.length; i++) {
+        await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
+            .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
+    }
+
+    const errors = validationResult(req).array()
+    
     await Hotel.findOne({ _id: req.params.id }, (err, result) => {
+        if(errors.length !== 0)
+            return res.render('accounts/editHotelPhotos.ejs', { errors: errors, user: result, session: req.session })
+
         if (result != null) {
             result.photos = []
-            
-            if(typeof req.body.photos != 'undefined'){
+
+            if (typeof req.body.photos != 'undefined') {
                 for (photo of req.body.photos) {
-                    if (photo.trim() !== '') {
+                    if (photo !== '') {
                         result.photos.push(photo)
                     }
                 }
             }
-            
+
             result.save()
             return res.render('accounts/editHotelPhotos.ejs', { messages: [{ msg: 'Successfully edited photos' }], user: result, session: req.session })
         }
-        return res.render('accounts/editHotelPhotos.ejs', { errors: [{ msg: 'Something went wrong. Please try again later.' }], user: result, session: req.session })
+        return res.render('accounts/editHotelPhotos.ejs', { errors: [{msg: 'Something went wrong. Please try again later.'}], user: result, session: req.session })
 
     }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT HOTEL PHOTOS PAGE:\n${err}`))
 }

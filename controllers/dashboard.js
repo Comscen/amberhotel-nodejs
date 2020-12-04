@@ -76,10 +76,6 @@ exports.handleAddRoomForm = [
         .isIn(['Standard', 'Exclusive', 'Deluxe', 'Premium']).withMessage('Invalid standard!')
         .escape(),
 
-    // Photos - array of URLs
-    // body('photos').trim()
-    // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
-
     // Check in and check out - time
     body('checkIn').trim().notEmpty()
         .escape(),
@@ -93,6 +89,12 @@ exports.handleAddRoomForm = [
         }
         if (typeof req.session.business == 'undefined') {
             return res.render(`index.ejs`, { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
+        }
+
+        //Custom photo validator
+        for(let i = 0; i < req.body.photos.length; i++){
+            await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
+                .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
         }
 
         const errors = validationResult(req).array()
@@ -149,9 +151,11 @@ exports.handleEditRoomForm = [
     body('name').trim()
         .matches(/^[^\\W]{0}[\p{L}\d\s\-0-9]{0,}$/u).withMessage('Name can contain alphanumeric characters, "&", spaces and "-"!')
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
+
     // Description - letters, numbers, ',' and '.', 
     body('description').trim().isLength({max:900}).withMessage('Description cannot be longer than 900 characters')
         .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
+
     // Price - numbers only
     body('price').trim()
         .notEmpty().withMessage('Price cannot be empty!')
@@ -161,6 +165,7 @@ exports.handleEditRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Beds - numbers only
     body('beds').trim()
         .notEmpty().withMessage('Number of beds cannot be empty!')
@@ -172,6 +177,7 @@ exports.handleEditRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Capacity - numbers only
     body('capacity').trim()
         .notEmpty().withMessage('Number of people cannot be empty!')
@@ -181,16 +187,16 @@ exports.handleEditRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Standard - select one menu
     body('standard').trim()
         .isIn(['Standard', 'Exclusive', 'Deluxe', 'Premium']).withMessage('Invalid standard!')
         .escape(),
-    // Photos - array of URLs
-    // body('photos').trim()
-    // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
+
     // Check in and check out - time
     body('checkIn').trim().notEmpty()
         .escape(),
+
     body('checkOut').trim().notEmpty()
         .escape(),
 
@@ -200,6 +206,12 @@ exports.handleEditRoomForm = [
         }
         if (typeof req.session.business == 'undefined') {
             return res.render(`index.ejs`, { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
+        }
+
+        //Custom photo validator
+        for(let i = 0; i < req.body.photos.length; i++){
+            await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
+                .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
         }
 
         const errors = validationResult(req).array()
@@ -229,6 +241,7 @@ exports.handleEditRoomForm = [
                 }
                 return res.render('dashboard/editRoom.ejs', { errors: [{ msg: 'Something went wrong' }], session: req.session, room: result })
             }
+            return res.render('dashboard/editRoom.ejs', { errors: errors, session: req.session, room: result })
         }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT ROOM PAGE: \n${err}`))
     }
 ]
