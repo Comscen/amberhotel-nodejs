@@ -11,6 +11,6 @@ const CommentSchema = new mongoose.Schema({
     hotel: { type: String, ref: 'Hotel', required: true }
 })
 
-const Comment = mongoose.Model('Comment', CommentSchema)
+const Comment = mongoose.model('Comment', CommentSchema)
 
 module.exports = Comment
