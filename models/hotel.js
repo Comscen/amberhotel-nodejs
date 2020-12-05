@@ -10,7 +10,7 @@ const HotelSchema = new mongoose.Schema({
     city: { type: String, required: true },
     address: { type: String, required: true },
     postalCode: { type: String, required: true },
-    rating: {type: mongoose.Decimal128},
+    rating: { type: Number },
     webPage: String,
     photo: String,
     photos: [String],

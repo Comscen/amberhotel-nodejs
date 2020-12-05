@@ -12,7 +12,7 @@ function filterRooms() {
             beds: room.querySelector("td[name='beds']").innerText,
             capacity: room.querySelector("td[name='capacity']").innerText.split(' ')[0],
             standard: room.querySelector("td[name='standard']").innerText,
-            rating: room.querySelector("span[name='rating']").innerText
+            rating: room.querySelector("span[name='rating']").innerText.trim()
         }
 
         var nameFilters = {
@@ -46,8 +46,7 @@ function filterRooms() {
 
         let priceMin = document.getElementById('priceLow').value;
         let priceMax = document.getElementById('priceHigh').value;
-        let ratingMin = document.getElementById('rating').value;
-        
+
         if (priceMin !== '') {
             if (parseInt(roomInfo["price"]) < parseInt(priceMin))
                 hideRoom(room);
@@ -77,7 +76,7 @@ function resetRooms() {
 function resetFilters() {
     resetRooms();
     let rating = document.getElementById('rating')
-    rating.value = 3.0
+    rating.value = 2.5
     updateRangeValue(rating)
     document.getElementById('hotelName').value = '';
     document.getElementById('city').value = '';

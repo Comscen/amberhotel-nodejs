@@ -16,9 +16,8 @@ function filterHotels() {
                 hotel.style = 'display: none;'
         }
 
-        console.log(parseFloat(hotel.querySelector("span[name='rating']").innerText));
-        console.log(document.getElementById('rating').value);
-        if (parseFloat(hotel.querySelector("span[name='rating']").innerText) < parseFloat(document.getElementById('rating').value)) {
+        let hotelRating = hotel.querySelector("span[name='rating']").innerText.trim()
+        if (parseFloat(hotelRating) < parseFloat(document.getElementById('rating').value)) {
             hotel.style = 'display: none;'
         }
 
@@ -34,7 +33,7 @@ function resetHotels() {
 function resetFilters() {
     resetHotels();
     let rating = document.getElementById('rating')
-    rating.value = 3.0
+    rating.value = 2.5
     updateRangeValue(rating)
     document.getElementById('city').value = ''
     document.getElementById('country').value = 'Poland'

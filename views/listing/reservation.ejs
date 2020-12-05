@@ -44,7 +44,13 @@
                         <div class="col-md-12 text-center">
                             <h3>
                                 <%= room.hotel.name %>
-                                <span class="badge badge-primary" style="background: rgb(224,116,37);font-size: 15px;">3.5<img src="/img/star.png" width="25px" style="margin-top: -5px;width: 15px;"></span>
+                                <span class="badge badge-primary" style="background: rgb(224,116,37);font-size: 15px;">
+                                    <% if (typeof room.hotel.rating != 'undefined') { %>
+                                        <%= room.hotel.rating %>
+                                    <% } else { %>
+                                        No rating
+                                    <% } %>
+                                    <img src="/img/star.png" width="25px" style="margin-top: -5px;width: 15px;"></span>
                             </h3>
                         </div>
                     </div>

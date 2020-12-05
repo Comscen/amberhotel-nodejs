@@ -16,8 +16,8 @@
                     <input id="city" class="form-control" type="text" placeholder="City">
                 </div>
                 <div class="form-group" style="margin-top: -8px">
-                    <output>Minimum rating: 3</output>
-                    <input id="rating" type="range" min="1" max="5" step="0.10" oninput="updateRangeValue(this)" class="form-control-range">
+                    <output>Minimum rating: 2.5</output>
+                    <input id="rating" type="range" min="0" max="5" step="0.10" oninput="updateRangeValue(this)" class="form-control-range">
                 </div>
                 <div class="form-group">
                     <label for="country">Country</label>
@@ -53,7 +53,14 @@
                                     </a>
                                 </div>
                                 <div class="col-md-8" style="max-width: 66%; word-wrap: break-word;">
-                                    <h4 class="name"><%= hotel.name %>&nbsp;<span name="rating" class="badge badge-primary" style="background: rgb(224,116,37);">3.8<img src="/img/star.png" style="width: 12px;margin-top: -4px;"/></span></h4>
+                                    <h4 class="name"><%= hotel.name %>&nbsp;<span name="rating" class="badge badge-primary" style="background: rgb(224,116,37);font-size: 14px;">
+                                        <% if (typeof hotel.rating != 'undefined') { %>
+                                            <%= hotel.rating %>
+                                        <% } else { %>
+                                            No rating
+                                        <% } %>
+
+                                        <img src="/img/star.png" style="width: 12px;margin-top: -4px;"/></span></h4>
                                     <p class="description"><%= hotel.city %>, <%= hotel.country %></p>
                                 </div>
                             </div>

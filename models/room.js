@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var { nanoid } = require('nanoid')
 
 const RoomSchema = new mongoose.Schema({
-    _id: { type: String, default: () => nanoid(10)},
+    _id: { type: String, default: () => nanoid(10) },
     name: { type: String, required: true },
     description: String,
     price: { type: Number, required: true },

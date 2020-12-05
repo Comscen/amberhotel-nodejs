@@ -19,7 +19,13 @@
             </div>
             <div class="product-rating">
                 <a name="hotelName" class="small-text" href="/account/<%= room.hotel._id %>" style="margin-left: 0px;"><%= room.hotel.name %> </a>
-                <span name="rating" class="badge" style="background-color: rgb(224,116,36);color: white;">4.2<img src="/img/star.png" style="width: 10px;margin-top: -4px;"></span>
+                <span name="rating" class="badge" style="background-color: rgb(224,116,36);color: white;">
+                    <% if (typeof room.hotel.rating != 'undefined') { %>
+                        <%= room.hotel.rating %>
+                    <% } else { %>
+                        No rating
+                    <% } %>
+                    <img src="/img/star.png" style="width: 10px;margin-top: -4px;"></span>
                 <input type="hidden" name="city" value="<%= room.hotel.city %>">
                 <input type="hidden" name="country" value="<%= room.hotel.country %>">
             </div>

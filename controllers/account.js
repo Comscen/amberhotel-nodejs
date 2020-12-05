@@ -4,6 +4,7 @@ var postalCodes = require('postal-codes-js')
 var User = require('../models/user')
 var Hotel = require('../models/hotel')
 var Room = require('../models/room')
+var Comment = require('../models/comment')
 
 async function emailUnavailable(req) {
     var emailIsUnavailable = false
@@ -160,17 +161,43 @@ exports.showAccount = async (req, res) => {
         await Hotel.findOne({ _id: req.params.id }).lean().exec(),
     ]
 
-    await Promise.all(queries).then(results => {
+    await Promise.all(queries).then(async results => {
         if (results[0] !== null) {
             results[0].joined = results[0].joined.toISOString().substr(0, 10)
-            return res.render('accounts/account.ejs', { user: results[0], session: req.session })
+
+            var queries = [
+                await Comment.find({ user: req.params.id, byUser: false }).populate('hotel').lean().exec(),
+                await Comment.find({ user: req.params.id, byUser: true }).populate('hotel').lean().exec()
+            ]
+
+            await Promise.all(queries).then(additionalData => {
+                if (additionalData[0].length == 0 && additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[0], session: req.session })
+                else if (additionalData[0].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[0], commentsByUser: additionalData[1], session: req.session })
+                else if (additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[0], commentsAboutUser: additionalData[0], session: req.session })
+                else
+                    return res.render('accounts/account.ejs', { user: results[0], commentsAboutUser: additionalData[0], commentsByUser: additionalData[1], session: req.session })
+            })
+
         } else if (results[1] !== null) {
 
-            Room.find({ hotel: req.params.id }).populate('hotel').lean().exec().then(rooms => {
-                if (rooms.length > 0) {
-                    return res.render('accounts/account.ejs', { user: results[1], rooms: rooms, session: req.session })
-                }
-                return res.render('accounts/account.ejs', { user: results[1], session: req.session })
+            var queries = [
+                await Room.find({ hotel: req.params.id }).populate('hotel').lean().exec(),
+                await Comment.find({ hotel: req.params.id, byUser: true }).populate('user').lean().exec()
+            ]
+
+            await Promise.all(queries).then(additionalData => {
+                if (additionalData[0].length == 0 && additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[1], session: req.session })
+                else if (additionalData[0].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[1], commentsAboutHotel: additionalData[1], session: req.session })
+                else if (additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[1], rooms: additionalData[0], session: req.session })
+                else
+                    return res.render('accounts/account.ejs', { user: results[1], rooms: additionalData[0], commentsAboutHotel: additionalData[1], session: req.session })
+
             })
 
         } else {
@@ -300,9 +327,9 @@ exports.handleEditPhotosForm = async (req, res) => {
     }
 
     const errors = validationResult(req).array()
-    
+
     await Hotel.findOne({ _id: req.params.id }, (err, result) => {
-        if(errors.length !== 0)
+        if (errors.length !== 0)
             return res.render('accounts/editHotelPhotos.ejs', { errors: errors, user: result, session: req.session })
 
         if (result != null) {
@@ -319,7 +346,7 @@ exports.handleEditPhotosForm = async (req, res) => {
             result.save()
             return res.render('accounts/editHotelPhotos.ejs', { messages: [{ msg: 'Successfully edited photos' }], user: result, session: req.session })
         }
-        return res.render('accounts/editHotelPhotos.ejs', { errors: [{msg: 'Something went wrong. Please try again later.'}], user: result, session: req.session })
+        return res.render('accounts/editHotelPhotos.ejs', { errors: [{ msg: 'Something went wrong. Please try again later.' }], user: result, session: req.session })
 
     }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT HOTEL PHOTOS PAGE:\n${err}`))
 }

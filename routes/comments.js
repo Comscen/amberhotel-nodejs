@@ -7,12 +7,12 @@ var commentsController = require('../controllers/comments')
 router.get('/add/hotel/:id', commentsController.showForUserCommentForm)
 
 //Show form to add comment about private user
-router.get('add/user/:id', commentsController.showForHotelCommentForm)
+router.get('/add/user/:id', commentsController.showForHotelCommentForm)
 
 //Handle form to add comment about hotel
 router.post('/add/hotel/:id', commentsController.handleForUserCommentForm)
 
 //Handle form to add comment about private user
-router.post('add/user/:id', commentsController.handleForHotelCommentForm)
+router.post('/add/user/:id', commentsController.handleForHotelCommentForm)
 
 module.exports = router

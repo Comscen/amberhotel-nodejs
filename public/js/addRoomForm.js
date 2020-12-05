@@ -8,7 +8,8 @@ const DOMstrings = {
   stepFormPanelClass: 'multisteps-form__panel',
   stepFormPanels: document.querySelectorAll('.multisteps-form__panel'),
   stepPrevBtnClass: 'js-btn-prev',
-  stepNextBtnClass: 'js-btn-next' };
+  stepNextBtnClass: 'js-btn-next'
+};
 
 
 //remove class from a set of items
@@ -135,8 +136,7 @@ DOMstrings.stepsForm.addEventListener('click', e => {
   const eventTarget = e.target;
 
   //check if we clicked on `PREV` or NEXT` buttons
-  if (!(eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`) || eventTarget.classList.contains(`${DOMstrings.stepNextBtnClass}`)))
-  {
+  if (!(eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`) || eventTarget.classList.contains(`${DOMstrings.stepNextBtnClass}`))) {
     return;
   }
 

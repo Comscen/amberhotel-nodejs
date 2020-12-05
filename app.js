@@ -58,7 +58,7 @@ app.get('/logout', (req, res) => {
     delete req.session.logged
     delete req.session.userId
     if (req.session.business) delete req.session.business
-    return res.render('index.ejs', {session: req.session})
+    return res.redirect('/')
 })
 
 /* 

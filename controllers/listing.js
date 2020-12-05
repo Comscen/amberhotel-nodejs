@@ -86,7 +86,7 @@ exports.handleReservationForm = async (req, res) => {
         return Promise.resolve('')
     }).run(req)
 
-    await body('cvc').isLength({min: 3, max: 3}).withMessage('CVC/CVV is a 3 digit number!').run(req)
+    await body('cvc').isLength({ min: 3, max: 3 }).withMessage('CVC/CVV is a 3 digit number!').run(req)
 
     await body('creditcard').isCreditCard().withMessage('Invalid credit card number!').run(req)
 

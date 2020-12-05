@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<%- include("../partials/header.ejs") %>
+
+<body>
+
+    <%- include("../partials/nav.ejs") %>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="css/simple-rating.css">
+
+
+    <div class="container" style="margin-top: 40px">
+        
+        <div class="row">
+            <div class="col">
+                <% if (typeof errors != 'undefined') { %>
+                    <% for (error of errors) { %>
+                        <div class="alert alert-danger" role="alert" style="margin-top: 16px;"><span><%= error.msg %></span></div>
+                    <% } %>
+                <% } %>
+
+                <% if (typeof messages != 'undefined') { %>
+                    <% for (message of messages) { %>
+                        <div class="alert alert-success" role="alert" style="margin-top: 16px;"><span><%= message.msg %></span></div>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+
+        <% if (typeof user != 'undefined') { %>
+            <div class="row">
+                <div class="col-md-6" style="margin-top: 10px;padding: 5px;">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 text-center">
+                            <% if (typeof user.photo != 'undefined') { %>
+                                <img class="rounded-circle" src="<%= user.photo %>" width="50px" height="50px">
+                            <% } else { %>
+                                <img class="rounded-circle" src="/img/no_picture.png" width="50px" height="50px">
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center" style="margin-top: 6px;">
+                        <div class="col-md-12 text-center">
+                            <h3><%= user.name %> <%= user.surname %></h3>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td><i class="icon ion-email"></i></td>
+                            <td><p>E-mail address</p></td>
+                            <td><b><%= user.email %></b></td>
+                        </tr>
+                        <tr>
+                            <td><i class="icon ion-android-pin"></i></td>
+                            <td><p>Location</p></td>
+                            <td><b><%= user.location %></b></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-6 account-info" style="margin: 0px;margin-top: 10px;padding: 20px;">
+                    <h4 class="text-center">New comment</h4>
+                    <form method="POST" style="margin-top:15px">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <label for="title">Comment title</label>
+                                <input type="text" name="title" id="title" class="form-control" placeholder="Title" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Comment</label>
+                            <textarea maxlength="400" class="form-control" style="height:280px; resize: none;" oninput="checkLength(this)" placeholder="Comment" name="content" id="content" required></textarea>
+                        </div>
+                        <div class="form-group text-center align-content-center">
+                            <input type="submit" class="btn text-center" style="background: rgb(224,116,37);color:white" value="Add comment"></input>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        <% } %>
+
+    </div>
+
+    <%- include("../partials/footer.ejs") %>
+    <%- include("../partials/scripts.ejs") %>
+    <script src="/js/simple-rating.js"></script>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+            $('.rating').rating();
+        });
+        
+        function checkLength(textarea) {
+            document.getElementById('lenLabel').innerText = `${400 - textarea.value.length} characters left`
+        }
+    </script>
+
+</body>
+
+</html>

@@ -38,7 +38,13 @@
                                         <% } else { %>
                                             <img class="border rounded-circle border-light shadow account-photo" src="/img/no_picture.png" style="width: 50px;height: 50px;">
                                         <% } %>
-                                        <h5 style="margin: 0"><%= room.hotel.name %> <span class="badge" style="background-color:rgb(224,116,37);color:white">4.2<img src="/img/star.png" style="width: 14px;margin-top: -5px;"></span></h5>
+                                        <h5 style="margin: 0"><%= room.hotel.name %> <span class="badge" style="background-color:rgb(224,116,37);color:white">
+                                            <% if (typeof room.hotel.rating != 'undefined') { %>
+                                                <%= room.hotel.rating %>
+                                            <% } else { %>
+                                                No rating
+                                            <% } %>
+                                            <img src="/img/star.png" style="width: 14px;margin-top: -5px;"></span></h5>
                                 </div>
                             </a>
                         </div>
@@ -116,6 +122,8 @@
 
             <% if (typeof room.photos != 'undefined' && room.photos.length != 0)  { %>
                 <div class="col-md-12" style="margin-top:30px;">
+                    <hr>
+                    <h2 style="margin-top: 10px;">Photos <i class="icon ion-android-camera"></i></h2>
                     <div class="carousel slide" data-ride="carousel" id="carousel-1" style="height: 500px;width: 1108px;">
                         <div class="carousel-inner" style="height: 500px;width: 1108px; margin-left: -12px;">
                             <div class="carousel-item active"><img class="w-100 d-block" src="<%= room.photos[0] %>" alt="Slide Image"></div>

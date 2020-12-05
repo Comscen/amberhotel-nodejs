@@ -36,7 +36,7 @@ exports.handleAddRoomForm = [
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
 
     // Description - letters, numbers, ',' and '.', 
-    body('description').trim().isLength({max:900}).withMessage('Description cannot be longer than 900 characters')
+    body('description').trim().isLength({ max: 900 }).withMessage('Description cannot be longer than 900 characters')
         .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
 
     // Price - numbers only
@@ -92,7 +92,7 @@ exports.handleAddRoomForm = [
         }
 
         //Custom photo validator
-        for(let i = 0; i < req.body.photos.length; i++){
+        for (let i = 0; i < req.body.photos.length; i++) {
             await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
                 .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
         }
@@ -153,7 +153,7 @@ exports.handleEditRoomForm = [
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
 
     // Description - letters, numbers, ',' and '.', 
-    body('description').trim().isLength({max:900}).withMessage('Description cannot be longer than 900 characters')
+    body('description').trim().isLength({ max: 900 }).withMessage('Description cannot be longer than 900 characters')
         .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
 
     // Price - numbers only
@@ -209,7 +209,7 @@ exports.handleEditRoomForm = [
         }
 
         //Custom photo validator
-        for(let i = 0; i < req.body.photos.length; i++){
+        for (let i = 0; i < req.body.photos.length; i++) {
             await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
                 .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
         }

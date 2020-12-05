@@ -60,6 +60,16 @@
                                 <!-- Fields for business accounts -->
                                 <% } else {%>
                                     <tr>
+                                        <td><i class="icon ion-heart"></i> Rating</i></td>
+                                        <td>
+                                            <% if (typeof user.rating != 'undefined') { %>
+                                                <%= user.rating %>
+                                            <% } else { %>
+                                                No rating
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td><i class="icon ion-android-globe"></i> City</i></td>
                                         <td><%= user.city %>, <%= user.country %></td>
                                     </tr>
@@ -84,6 +94,8 @@
                 </div>
                 <% if (typeof user.photos != 'undefined' && user.photos.length != 0)  { %>
                     <div class="col-md-12" style="margin-top:30px;">
+                        <hr>
+                        <h2 style="margin-top: 10px;">Photos <i class="icon ion-android-camera"></i></h2>
                         <div class="carousel slide" data-ride="carousel" id="carousel-1" style="height: 500px;width: 1108px;">
                             <div class="carousel-inner" style="height: 500px;width: 1108px; margin-left: -12px;">
                                 <div class="carousel-item active"><img class="w-100 d-block" src="<%= user.photos[0] %>" alt="Slide Image"></div>
@@ -114,6 +126,8 @@
                 <div class="row" style="margin-top: 20px">
                     <div class="col-md-12">
                         <% if (typeof rooms != 'undefined') { %>
+                        <hr>
+                        <h2 style="margin-top: 10px;">Rooms <i class="icon ion-ios-list"></i></h2>
                             <div id="rooms" class="row product-list justify-content-center">
                                 <%- include("../partials/roomListing.ejs") %>
                             </div>
@@ -124,28 +138,90 @@
                         <% } %>
                     </div>
 
-                    <!-- <div class="col-md-12" style="max-width: 40%;">
-                        <div class="col" style="margin-top: 16px;border-style: none;border-color: rgba(255,255,255,0);border-radius: 20px;margin-right: 0px;">
-                            <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
-                                <div class="card-body">
-                                    <h4 class="card-title">Comment 1</h4>
-                                    <blockquote class="blockquote">
-                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                        <footer class="blockquote-footer">Michał Tangri</footer>
-                                    </blockquote>
-                                </div>
-                            </div>
-                            <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
-                                <div class="card-body">
-                                    <h4 class="card-title">Comment 2</h4>
-                                    <blockquote class="blockquote">
-                                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                        <footer class="blockquote-footer">Random user</footer>
-                                    </blockquote>
-                                </div>
+                    <% if (typeof commentsAboutHotel != 'undefined') { %>
+                        <div class="col-md-12">
+                            <hr>
+                            <h2 style="margin-top: 10px;">Comments <i class="icon ion-chatbubbles"></i></h2>
+                            <div class="row">
+                                <% for (comment of commentsAboutHotel) { %>
+                                    <div class="col-md-12" style="margin-top: 16px;border-style: none;border-color: rgba(255,255,255,0);border-radius: 20px;margin-right: 0px;">
+                                        <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
+                                            <div class="card-body">
+                                                <h4 class="card-title"><%= comment.title %>
+                                                    <span class="badge" style="background-color:rgb(224,116,37);color:white">
+                                                        <% for (let i = 0; i < parseInt(comment.rating); i++) { %>
+                                                            <img src="/img/star.png" style="width: 14px;margin-top: -5px;">
+                                                        <% } %>
+                                                    </span>
+                                                </h4>
+                                                <blockquote class="blockquote">
+                                                    <p class="mb-0"><%= comment.content %></p>
+                                                    <a href="/account/<%= comment.user._id %>"><footer class="blockquote-footer"><%= comment.user.name %> <%= comment.user.surname %></footer></a>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
                             </div>
                         </div>
-                    </div> -->
+                    <% } %>
+
+                    <% if (typeof commentsByUser != 'undefined') { %>
+                        <div class="col-md-12">
+                            <hr>
+                            <h2 style="margin-top: 10px;">Comments by this user <i class="icon ion-chatbubbles"></i></h2>
+                            <div class="row">
+                                <% for (comment of commentsByUser) { %>
+                                    <div class="col-md-12" style="margin-top: 16px;border-style: none;border-color: rgba(255,255,255,0);border-radius: 20px;margin-right: 0px;">
+                                        <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
+                                            <div class="card-body">
+                                                <footer class="small-text" style="font-size: 14px;">
+                                                    Comment about
+                                                    <a href="/account/<%= comment.hotel._id %>">
+                                                        <%= comment.hotel.name %>
+                                                    </a>
+                                                </footer>
+                                                <blockquote class="blockquote">
+                                                    <h4 class="card-title"><%= comment.title %>
+                                                        <span class="badge" style="background-color:rgb(224,116,37);color:white">
+                                                            <% for (let i = 0; i < parseInt(comment.rating); i++) { %>
+                                                                <img src="/img/star.png" style="width: 14px;margin-top: -5px;">
+                                                            <% } %>
+                                                        </span>
+                                                    </h4>
+                                                    <p class="mb-0"><%= comment.content %></p>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <% if (typeof commentsAboutUser != 'undefined') { %>
+                        <div class="col-md-12">
+                            <hr>
+                            <h2 style="margin-top: 10px;">Comments about this user <i class="icon ion-chatbubbles"></i></h2>
+                            <div class="row">
+                                <% for (comment of commentsAboutUser) { %>
+                                    <div class="col-md-12" style="margin-top: 16px;border-style: none;border-color: rgba(255,255,255,0);border-radius: 20px;margin-right: 0px;">
+                                        <div class="card" style="margin-bottom: 0px;margin-top: 10px;">
+                                            <div class="card-body">
+                                                <h4 class="card-title"><%= comment.title %></h4>
+                                                <blockquote class="blockquote">
+                                                    <p class="mb-0"><%= comment.content %></p>
+                                                    <a href="/account/<%= comment.user._id %>"><footer class="blockquote-footer"><%= comment.hotel.name %></footer></a>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% } %>
+
+
                 </div>
             </div>
             
