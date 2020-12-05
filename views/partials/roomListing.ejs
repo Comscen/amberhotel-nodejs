@@ -13,13 +13,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8">
-                    <h2 name="roomName"><%= room.name %></h2>
+                <div class="col-12">
+                    <h2 name="roomName" style="white-space: break-spaces;max-width: none;"><%= room.name %></h2>
                 </div>
             </div>
             <div class="product-rating">
                 <a name="hotelName" class="small-text" href="/account/<%= room.hotel._id %>" style="margin-left: 0px;"><%= room.hotel.name %> </a>
-                <span name="rating" class="badge badge-primary">4.2<img src="/img/star.png" style="width: 10px;margin-top: -4px;"></span>
+                <span name="rating" class="badge" style="background-color: rgb(224,116,36);color: white;">4.2<img src="/img/star.png" style="width: 10px;margin-top: -4px;"></span>
                 <input type="hidden" name="city" value="<%= room.hotel.city %>">
                 <input type="hidden" name="country" value="<%= room.hotel.country %>">
             </div>
@@ -28,21 +28,21 @@
                     <p class="product-description">
                         <table class="table">
                             <tr>
-                                <td style="width:50%;">Beds </td>
+                                <td style="width:50%;"><i class="fas fa-bed"></i> Beds </td>
                                 <td name="beds"><%= room.beds %></td>
                             </tr>
                             <tr>
-                                <td>Capacity </td>
+                                <td><i class="fas fa-user"></i> Capacity </td>
                                 <td name="capacity"><%= room.capacity %> persons</td>
                             </tr>
                             <tr>
-                                <td>Standard </td>
+                                <td><i class="fas fa-star"></i> Standard </td>
                                 <td name="standard"><%= room.standard %></td>
                             </tr>
                         </table>
                     </p>
                     <div class="row">
-                        <div class="col-6"><button class="btn" type="button" style="background: rgb(224,116,36);height: 35px;width: 120px;margin-left: 0px;">Book now!</button></div>
+                        <div class="col-6"><button class="btn" type="button" style="background: rgb(224,116,36);height: 35px;width: 120px;margin-left: 0px;">Show details</button></div>
                         <div class="col-6">
                             <p class="product-price" style="margin-bottom: 0;">€<%= room.price %></p>
                             <p style="text-align: end;font-size: 12px;">per night</p>

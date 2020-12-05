@@ -47,11 +47,11 @@
             <div class="row" style="margin-top: 10px">
                 <% for (hotel of hotels) { %>
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card" style="width: 512px;">
                             <% if (typeof hotel.photo != 'undefined') { %>
-                                <img class="card-img-top w-100 d-block" alt="" src="<%= hotel.photo %>"/>
+                                <img class="card-img-top w-100 d-block" style="height: 320px;" alt="" src="<%= hotel.photo %>"/>
                             <% } else { %>
-                                <img class="card-img-top w-100 d-block" alt="" src="/img/no_photo.png"/>
+                                <img class="card-img-top w-100 d-block" style="height: 320px;" alt="" src="/img/no_photo.png"/>
                             <% } %>
                             <div class="card-body">
                                 <h4 class="card-title"><%= hotel.name %></h4>

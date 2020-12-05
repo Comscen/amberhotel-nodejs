@@ -7,14 +7,21 @@
 
     <%- include("../partials/nav.ejs") %>
 
-    <% if (typeof errors != 'undefined') { %>
-        <% for (error of errors) { %>
-        <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
-        <% } %>
-    <% } %>
-
     <div>
         <div class="container" style="margin-top: 40px;">
+
+            <% if (typeof errors != 'undefined') { %>
+                <% for (error of errors) { %>
+                <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
+                <% } %>
+            <% } %>
+        
+            <% if (typeof messages != 'undefined') { %>
+                <% for (message of messages) { %>
+                <div class="alert alert-success" role="alert"><span><%= message.msg %></span></div>
+                <% } %>
+            <% } %>
+
             <div class="row">
                 <div class="col-md-4">
                     <h2 style="width: 343px;">Your rooms</h2>
@@ -43,7 +50,7 @@
                 <% for (room of rooms) { %>
                     <tr>
                         <td>
-                            <a href="/listing/rooms/<%= room._id %>"></a>
+                            <a href="/listing/rooms/<%= room._id %>">
                                 <% if (typeof room.photos != 'undefined' && typeof room.photos[0] != 'undefined') { %>
                                     <img src="<%= room.photos[0] %>" style="width: 140px;"/>
                                 <% } else { %>
@@ -57,7 +64,7 @@
                         <td>€<%= room.price %></td>
                         <td>
                             <a href="/dashboard/edit/<%= room._id %>"/ class="btn btn-warning"><i class="icon ion-edit"></i></a>
-                            <a href="#" class="btn btn-warning" ><i class="icon ion-android-delete"></i></a>
+                            <a href="#" class="btn btn-danger" ><i class="icon ion-android-delete"></i></a>
                         </td>
                     </tr>
                 <% } %>
