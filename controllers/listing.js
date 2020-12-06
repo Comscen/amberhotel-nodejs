@@ -130,7 +130,7 @@ exports.handleReservationForm = async (req, res) => {
                 }
 
                 let totalCost = 0
-                while (startDate < endDate) {
+                while (startDate <= endDate) {
                     totalCost += room.price
                     startDate.setDate(startDate.getDate() + 1)
                 }
@@ -148,6 +148,7 @@ exports.handleReservationForm = async (req, res) => {
                         ccExpDate: new Date(expirationDateArray[0], expirationDateArray[1] - 1),
                         holderName: req.body.credentials
                     },
+                    hotel: room.hotel,
                     room: room._id,
                     user: req.session.userId
                 }).save((err, result) => {

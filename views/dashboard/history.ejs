@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<%- include("../partials/header.ejs") %>
+
+<body>
+
+    <%- include("../partials/nav.ejs") %>
+
+    <div class="container">
+        <% if (typeof errors != 'undefined') { %>
+            <% for (error of errors) { %>
+            <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
+            <% } %>
+        <% } %>
+        <% if (typeof reservations != 'undefined') { %>
+            <% if (session.business !== true) { %>
+                <div class="row row-cols-3 align-content-center" style="margin-top: 10px;">
+                    <% for (reservation of reservations) { %>
+                        <div class="col offset-0" style="margin-top: 10px;padding: 5px;">
+                            <div class="row">
+                                <div class="col" style="padding: 10px;">
+                                    <div class="row text-left">
+                                        <% if(reservation.hotel.photo != undefined && reservation.hotel.photo != null) { %>
+                                        <div class="col-3 col-xl-4"><a href="/account/<%= reservation.hotel._id %>"><img class="rounded-circle" src="<%= reservation.hotel.photo %>" width="100px" height="100px"></a></div> 
+                                        <% } else { %>   
+                                        <div class="col-3 col-xl-4"><a href="/account/<%= reservation.hotel._id %>"><img class="rounded-circle" src="/img/no_photo.png"" width="100px" height="100px"></a></div>
+                                        <% } %>
+                                        <div class="col align-items-center align-content-center">
+                                            <h3 class="text-left align-content-center"><%= reservation.hotel.name %>&nbsp;<span class="badge badge-primary" style="background: rgb(224,116,37);font-size: 15px;"><%= reservation.hotel.rating %><img src="/img/star.png" width="25px" style="margin-top: -5px;width: 15px;"></span></h3>
+                                            <h5 class="text-left align-content-center"><%= reservation.hotel.country %><br><%= reservation.hotel.address %> <br><%= reservation.hotel.postalCode %> <%= reservation.hotel.city %></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <h4 class="text-center"><%= reservation.name %></h4>
+                                    <p></p>
+                                    <p>Booking date:&nbsp; <%= reservation.createdAt.getDate() %>/<%= reservation.createdAt.getMonth() + 1 %>/<%= reservation.createdAt.getFullYear() %></p>
+                                    <p>Date of visit:&nbsp; <%= reservation.startDate.getDate()  %>/<%= reservation.startDate.getMonth() + 1 %>/<%= reservation.startDate.getFullYear() %> - <%= reservation.endDate.getDate() + 1  %>/<%= reservation.endDate.getMonth() + 1 %>/<%= reservation.endDate.getFullYear() %></p>
+                                    <p>Total cost: <%= reservation.totalPrice %> €</p>
+                                    <p>Payment status: <%= reservation.paid %></p>
+                                    <p>Reservation status: <%= reservation.finished %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <div class="row">
+                    <div class="col">
+                        <h1 style="text-align: center;color: rgb(33,200,40);">Current</h1>
+                    </div>
+                </div>
+                <div>
+                    <div class="container">
+                        <div class="row row-cols-3 align-content-center" style="margin-top: 10px;">
+                            <% for (reservation of reservations) { %>
+                                <% if (reservation.finished == false) { %>
+                                    <div class="col offset-0" style="margin-top: 10px;padding: 5px;">
+                                        <div class="row">
+                                            <div class="col" style="padding: 10px;">
+                                                <div class="row text-left">
+                                                    <% if(reservation.user.photo != undefined && reservation.user.photo != null) { %>
+                                                    <div class="col-3 col-xl-4"><img class="rounded-circle" src="<%= reservation.user.photo %>" width="100px" height="100px"></div>
+                                                    <% } else { %>   
+                                                    <div class="col-3 col-xl-4"><img class="rounded-circle" src="/img/no_photo.png"" width="100px" height="100px"></div>
+                                                    <% } %>
+                                                    <div class="col align-items-center align-content-center">
+                                                        <h3 class="text-left align-content-center"><%= reservation.user.name %> <%= reservation.user.surname %> &nbsp;</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <h4 class="text-center"><%= reservation.name %></h4>
+                                                <p></p>
+                                                <p>Booking date:&nbsp; <%= reservation.createdAt.getDate() %>/<%= reservation.createdAt.getMonth() + 1 %>/<%= reservation.createdAt.getFullYear() %></p>
+                                                <p>Date of visit:&nbsp; <%= reservation.startDate.getDate()  %>/<%= reservation.startDate.getMonth() + 1 %>/<%= reservation.startDate.getFullYear() %> - <%= reservation.endDate.getDate() + 1  %>/<%= reservation.endDate.getMonth() + 1 %>/<%= reservation.endDate.getFullYear() %></p>
+                                                <p>Total cost: <%= reservation.totalPrice %> €</p>
+                                                <p>Payment status: <%= reservation.paid %></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h1 style="text-align: center;color: rgb(0,0,0);box-shadow: inset 0px 0px;border-style: none;border-top: 1px none rgb(0,0,0) ;border-right-style: none;">Finished</h1>
+                    </div>
+                </div>
+                <div>
+                    <div class="container">
+                        <div class="row row-cols-3 align-content-center" style="margin-top: 10px;">
+                            <% for (reservation of reservations) { %>
+                                <% if (reservation.finished === true) { %>
+                                    <div class="col offset-0" style="margin-top: 10px;padding: 5px;">
+                                        <div class="row">
+                                            <div class="col" style="padding: 10px;">
+                                                <div class="row text-left">
+                                                    <% if(reservation.user.photo != undefined && reservation.user.photo != null) { %>
+                                                    <div class="col-3 col-xl-4"><img class="rounded-circle" src="<%= reservation.user.photo %>" width="100px" height="100px"></div>
+                                                    <% } else { %>   
+                                                    <div class="col-3 col-xl-4"><img class="rounded-circle" src="/img/no_photo.png"" width="100px" height="100px"></div>
+                                                    <% } %>
+                                                    <div class="col align-items-center align-content-center">
+                                                        <h3 class="text-left align-content-center"><%= reservation.user.name %> <%= reservation.user.surname %> &nbsp;</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <h4 class="text-center"><%= reservation.name %></h4>
+                                                <p></p>
+                                                <p>Booking date:&nbsp; <%= reservation.createdAt.getDate() %>/<%= reservation.createdAt.getMonth() + 1 %>/<%= reservation.createdAt.getFullYear() %></p>
+                                                <p>Date of visit:&nbsp; <%= reservation.startDate.getDate()  %>/<%= reservation.startDate.getMonth() + 1 %>/<%= reservation.startDate.getFullYear() %> - <%= reservation.endDate.getDate() + 1  %>/<%= reservation.endDate.getMonth() + 1 %>/<%= reservation.endDate.getFullYear() %></p>
+                                                <p>Total cost: <%= reservation.totalPrice %> €</p>
+                                                <p>Payment status: <%= reservation.paid %></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+
+    <%- include("../partials/footer.ejs") %>
+    <%- include("../partials/scripts.ejs") %>
+
+</body>
+
+</html>
