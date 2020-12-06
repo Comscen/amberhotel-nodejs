@@ -105,10 +105,24 @@ const handleHotelEditForm = async (req, res) => {
     await body('city').trim()
         .matches(/^[\p{L}\d\W]{1,85}$/u).withMessage('City name cannot be empty or longer than 85 characters').run(req)
 
+    const countryCodes = {
+        Poland: 'PL',
+        Germany: 'DE',
+        Austria: 'AT',
+        France: 'FR',
+        Denmark: 'DK'
+    }
+
     if (!req.session.logged)
         req.redirect('/login')
 
     const errors = validationResult(req).array()
+
+    const postalCodeValid = postalCodes.validate(countryCodes[req.body.country], req.body.postal)
+
+    if (postalCodeValid !== true)
+        errors.push({ msg: `Invalid postal code for ${req.body.country}` })
+
     let isEmailUnavailable = await emailUnavailable(req)
 
     await Hotel.findOne({ _id: req.session.userId }, (err, result) => {
@@ -127,7 +141,6 @@ const handleHotelEditForm = async (req, res) => {
                 result.webPage = webPage
             else if (typeof result.webPage != 'undefined')
                 result.webPage = undefined
-
 
             if (photo !== '')
                 result.photo = photo
