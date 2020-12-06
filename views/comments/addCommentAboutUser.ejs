@@ -62,19 +62,22 @@
                 </div>
                 <div class="col-md-6 account-info" style="margin: 0px;margin-top: 10px;padding: 20px;">
                     <h4 class="text-center">New comment</h4>
-                    <form method="POST" style="margin-top:15px">
+                    <form method="POST" style="margin-top:15px" onsubmit="validateForm(this)">
                         <div class="form-group">
                             <div class="form-row">
                                 <label for="title">Comment title</label>
-                                <input type="text" name="title" id="title" class="form-control" placeholder="Title" required>
+                                <input type="text" name="title" id="title" class="form-control" placeholder="Title" required oninput="isFieldValid(this)">
+                                <small id="titleError" class="form-text text-muted" style="display: none;">Title cannot contain special characters other than - . & , ! ( ) # % ' "  </small>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="content">Comment</label>
-                            <textarea maxlength="400" class="form-control" style="height:280px; resize: none;" oninput="checkLength(this)" placeholder="Comment" name="content" id="content" required></textarea>
+                            <label id="lenLabel" style="float:right;">400 characters left</label>
+                            <textarea maxlength="400" class="form-control" style="height:280px; resize: none;" oninput="checkLength(this); isFieldValid(this)" placeholder="Comment" name="content" id="content" required></textarea>
+                            <small id="contentError" class="form-text text-muted" style="display: none;">Comment cannot contain special characters other than - . & , ! ? # % ( ) ' " </small>
                         </div>
                         <div class="form-group text-center align-content-center">
-                            <input type="submit" class="btn text-center" style="background: rgb(224,116,37);color:white" value="Add comment"></input>
+                            <input type="submit" class="btn text-center" style="background: rgb(224,116,37);color:white" value="Add comment" oninput="isFieldValid(this)"></input>
                         </div>
                     </form>
                     
@@ -87,6 +90,7 @@
     <%- include("../partials/footer.ejs") %>
     <%- include("../partials/scripts.ejs") %>
     <script src="/js/simple-rating.js"></script>
+    <script src="/js/commentValidation.js"></script>
 
     <script type="application/javascript">
         $(document).ready(function(){

@@ -17,10 +17,8 @@
                         <li class="nav-item"><a class="nav-link" href="/account/<%= session.userId %>">Account</a></li>
                         <% if(session.business === true) { %>
                             <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/dashboard/history">History</a></li>
-                        <% } else { %>
-                            <li class="nav-item"><a class="nav-link" href="/dashboard/history">Reservations</a></li>
                         <% } %>
+                        <li class="nav-item"><a class="nav-link" href="/dashboard/history">Reservations</a></li>
                 <% } %>
 
             </ul>
