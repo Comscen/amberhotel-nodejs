@@ -29,6 +29,27 @@
         </div>
         
         <% if (typeof room != 'undefined') { %>
+
+            <script type="application/javascript">
+                function calculateCost() {
+                    let startDateArray = document.getElementById('reservationBegin').value.split('-');
+                    let endDateArray = document.getElementById('reservationEnd').value.split('-');
+                    if (startDateArray.length != 0 && endDateArray != 0 ) {
+                        let startDate = new Date(startDateArray[0], startDateArray[1] - 1, startDateArray[2]);
+                        let endDate = new Date(endDateArray[0], endDateArray[1] - 1, endDateArray[2]);
+                        
+                        let price = parseInt('<%= room.price %>');
+        
+                        let totalCost = 0;
+                        while (startDate < endDate) {
+                            totalCost += price;
+                            startDate.setDate(startDate.getDate() + 1);
+                        }
+                        return document.getElementById('totalPrice').innerHTML = `<b>€${totalCost}</b>`;
+                    }
+                }
+            </script>
+
             <div class="row">
                 <div class="col-md-6" style="margin-top: 10px;padding: 5px;">
                     <div class="row justify-content-center">
@@ -155,27 +176,6 @@
 
     </div>
 
-    <script type="application/javascript">
-        function calculateCost() {
-            let startDateArray = document.getElementById('reservationBegin').value.split('-');
-            let endDateArray = document.getElementById('reservationEnd').value.split('-');
-            if (startDateArray.length != 0 && endDateArray != 0 ) {
-                let startDate = new Date(startDateArray[0], startDateArray[1] - 1, startDateArray[2]);
-                let endDate = new Date(endDateArray[0], endDateArray[1] - 1, endDateArray[2]);
-                
-                let priceString = '<%= room.price %>';
-                if (typeof priceString != 'undefined')
-                    var price = parseInt(priceString)
-                let totalCost = 0;
-                while (startDate < endDate) {
-                    totalCost += price;
-                    startDate.setDate(startDate.getDate() + 1);
-                }
-                return document.getElementById('totalPrice').innerHTML = `<b>€${totalCost}</b>`;
-            }
-        }
-    </script>
-    
     <%- include("../partials/footer.ejs") %>
     <%- include("../partials/scripts.ejs") %>
 
