@@ -13,5 +13,7 @@ router.get('/edit/:id', dashboardController.showEditRoomForm)
 
 router.post('/edit/:id', dashboardController.handleEditRoomForm)
 
+router.get('/history', dashboardController.showHistory)
+
 
 module.exports = router

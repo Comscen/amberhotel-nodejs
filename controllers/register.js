@@ -8,8 +8,8 @@ async function emailAlreadyInDatabase(email, accountType) {
     var alreadyExists;
 
     var queries = [
-        await User.findOne({email: email}).select('email').exec(),
-        await Hotel.findOne({email: email}).select('email').exec()
+        await User.findOne({ email: email }).select('email').exec(),
+        await Hotel.findOne({ email: email }).select('email').exec()
     ]
 
     await Promise.all(queries).then(results => {
@@ -67,9 +67,10 @@ exports.handleRegisterForm = [
             }).save((error, obj) => {
                 if (error) {
                     console.log(`Database error while creating new account: ${error}`)
-                    return res.render('authorization/register.ejs', { 
-                        errors: [{ msg: 'There was a problem while creating your account. Please try again later.' }], 
-                        session: req.session })
+                    return res.render('authorization/register.ejs', {
+                        errors: [{ msg: 'There was a problem while creating your account. Please try again later.' }],
+                        session: req.session
+                    })
                 } else {
                     return res.render('index.ejs', { messages: [{ msg: 'New account created! You can now sign in.' }], session: req.session })
                 }
@@ -94,7 +95,7 @@ exports.handleHotelRegisterForm = [
         .isLength({ min: 5, max: 30 }).withMessage('Password must be between 5 and 30 characters long.'),
 
     body('hotelName').trim()
-        .isLength({min: 3, max: 64}).withMessage('Hotel name must be between 3 and 64 characters long.'),
+        .isLength({ min: 3, max: 64 }).withMessage('Hotel name must be between 3 and 64 characters long.'),
 
     body('address').trim()
         .matches(/^[\p{L}. .'0-9.-.&]{0,}$/u).withMessage('Address cannot special characters other than "&", "-" and "\'".')
@@ -129,7 +130,7 @@ exports.handleHotelRegisterForm = [
         const postalCodeValid = postalCodes.validate(countryCodes[country], postalCode)
 
         if (postalCodeValid !== true)
-            errors.push({msg: `Invalid postal code for ${country}`})
+            errors.push({ msg: `Invalid postal code for ${country}` })
 
         if (errors.length === 0) {
             var newHotel = new Hotel({
@@ -141,21 +142,21 @@ exports.handleHotelRegisterForm = [
                 address: req.body.address,
                 postalCode: postalCode,
             })
-            
+
             newHotel.save((error, obj) => {
                 if (error) {
                     console.log(`Database error while creating new business account: ${error}`)
-                    return res.render('authorization/registerHotel.ejs', { 
-                        errors: [{ msg: 'There was a problem while creating your business account. Please try again later.' }], 
-                        session: req.session 
-                        })
+                    return res.render('authorization/registerHotel.ejs', {
+                        errors: [{ msg: 'There was a problem while creating your business account. Please try again later.' }],
+                        session: req.session
+                    })
                 } else {
                     return res.render('index.ejs', { messages: [{ msg: 'New business account created! You can now sign in.' }], session: req.session })
                 }
 
             })
         } else {
-            return res.render('authorization/registerHotel.ejs', {errors: errors, session: req.session})
+            return res.render('authorization/registerHotel.ejs', { errors: errors, session: req.session })
         }
     }
 ]

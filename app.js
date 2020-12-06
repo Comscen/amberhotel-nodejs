@@ -38,6 +38,7 @@ var registerRoutes = require('./routes/register')
 var accountRoutes = require('./routes/account')
 var listingRoutes = require('./routes/listing')
 var dashboardRoutes = require('./routes/dashboard')
+var commentsRoutes = require('./routes/comments')
 
 app.use('/', indexRoutes)
 app.use('/login', loginRoutes)
@@ -45,6 +46,7 @@ app.use('/register', registerRoutes)
 app.use('/account', accountRoutes)
 app.use('/listing', listingRoutes)
 app.use('/dashboard', dashboardRoutes)
+app.use('/comments', commentsRoutes)
 
 /* 
     Routing for pages that don't need their own controller. About and license pages
@@ -56,7 +58,7 @@ app.get('/logout', (req, res) => {
     delete req.session.logged
     delete req.session.userId
     if (req.session.business) delete req.session.business
-    return res.render('index.ejs', {session: req.session})
+    return res.redirect('/')
 })
 
 /* 

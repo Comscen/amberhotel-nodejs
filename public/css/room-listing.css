@@ -15,7 +15,7 @@
 .product-item a.product-image {
   display: block;
   text-align: center;
-  box-shadow: 0 0 20px 8px #f3f3f3 inset;
+  /* box-shadow: 0 0 20px 8px #f3f3f3 inset; */
   width: 100%;
   margin-bottom: 25px;
   padding: 20px 0;

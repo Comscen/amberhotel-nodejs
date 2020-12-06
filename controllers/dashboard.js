@@ -1,5 +1,7 @@
 const { body, validationResult } = require("express-validator")
+const { populate } = require("../models/room")
 const Room = require("../models/room")
+const Reservation = require("../models/reservation")
 
 exports.showDashboard = async (req, res) => {
     if (!req.session.logged) {
@@ -36,7 +38,7 @@ exports.handleAddRoomForm = [
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
 
     // Description - letters, numbers, ',' and '.', 
-    body('description').trim().isLength({max:900}).withMessage('Description cannot be longer than 900 characters')
+    body('description').trim().isLength({ max: 900 }).withMessage('Description cannot be longer than 900 characters')
         .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
 
     // Price - numbers only
@@ -76,10 +78,6 @@ exports.handleAddRoomForm = [
         .isIn(['Standard', 'Exclusive', 'Deluxe', 'Premium']).withMessage('Invalid standard!')
         .escape(),
 
-    // Photos - array of URLs
-    // body('photos').trim()
-    // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
-
     // Check in and check out - time
     body('checkIn').trim().notEmpty()
         .escape(),
@@ -93,6 +91,12 @@ exports.handleAddRoomForm = [
         }
         if (typeof req.session.business == 'undefined') {
             return res.render(`index.ejs`, { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
+        }
+
+        //Custom photo validator
+        for (let i = 0; i < req.body.photos.length; i++) {
+            await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
+                .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
         }
 
         const errors = validationResult(req).array()
@@ -149,9 +153,11 @@ exports.handleEditRoomForm = [
     body('name').trim()
         .matches(/^[^\\W]{0}[\p{L}\d\s\-0-9]{0,}$/u).withMessage('Name can contain alphanumeric characters, "&", spaces and "-"!')
         .isLength({ min: 5, max: 64 }).withMessage('Name must be between 5 and 64 characters long'),
+
     // Description - letters, numbers, ',' and '.', 
-    body('description').trim().isLength({max:900}).withMessage('Description cannot be longer than 900 characters')
-        .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
+    body('description').trim().isLength({ max: 900 }).withMessage('Description cannot be longer than 900 characters')
+        .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters other than "-&.,!? \'\" "'),
+
     // Price - numbers only
     body('price').trim()
         .notEmpty().withMessage('Price cannot be empty!')
@@ -161,6 +167,7 @@ exports.handleEditRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Beds - numbers only
     body('beds').trim()
         .notEmpty().withMessage('Number of beds cannot be empty!')
@@ -172,6 +179,7 @@ exports.handleEditRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Capacity - numbers only
     body('capacity').trim()
         .notEmpty().withMessage('Number of people cannot be empty!')
@@ -181,16 +189,16 @@ exports.handleEditRoomForm = [
             return Promise.resolve('')
         })
         .escape(),
+
     // Standard - select one menu
     body('standard').trim()
         .isIn(['Standard', 'Exclusive', 'Deluxe', 'Premium']).withMessage('Invalid standard!')
         .escape(),
-    // Photos - array of URLs
-    // body('photos').trim()
-    // .isURL(true).withMessage('Photo URL has to be a valid URL!'),
+
     // Check in and check out - time
     body('checkIn').trim().notEmpty()
         .escape(),
+
     body('checkOut').trim().notEmpty()
         .escape(),
 
@@ -200,6 +208,12 @@ exports.handleEditRoomForm = [
         }
         if (typeof req.session.business == 'undefined') {
             return res.render(`index.ejs`, { session: req.session, errors: [{ msg: 'You cannot add a room if your account type is NOT business!' }] })
+        }
+
+        //Custom photo validator
+        for (let i = 0; i < req.body.photos.length; i++) {
+            await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
+                .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
         }
 
         const errors = validationResult(req).array()
@@ -229,6 +243,32 @@ exports.handleEditRoomForm = [
                 }
                 return res.render('dashboard/editRoom.ejs', { errors: [{ msg: 'Something went wrong' }], session: req.session, room: result })
             }
+            return res.render('dashboard/editRoom.ejs', { errors: errors, session: req.session, room: result })
         }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT ROOM PAGE: \n${err}`))
     }
 ]
+
+
+exports.showHistory = async (req, res) => {
+    if (!req.session.logged)
+        return res.redirect('/login')
+
+    if(req.session.business !== true){
+        await Reservation.find({user: req.session.userId}).lean().populate('hotel room').exec().then(async reservations =>{
+            if (reservations.length > 0){
+                reservations.reverse()
+                return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
+            }
+            return res.render('dashboard/history.ejs', {reservations: undefined, session: req.session})
+        }).catch(err => console.log(`CRITICAL GET HISTORY WHILE QUERYING PRIVATE USER RESERVATIONS:\n ${err}`))
+    } else {
+        await Reservation.find({hotel: req.session.userId}).lean().populate('user room').exec().then(async reservations =>{
+            if (reservations.length > 0){
+                reservations.reverse()
+                return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
+            }
+            return res.render('dashboard/history.ejs', {reservations: undefined, session: req.session})
+        }).catch(err => console.log(`CRITICAL GET HISTORY WHILE QUERYING BUSINESS USER RESERVATIONS:\n ${err}`))
+    }
+    
+}

@@ -4,6 +4,7 @@ var postalCodes = require('postal-codes-js')
 var User = require('../models/user')
 var Hotel = require('../models/hotel')
 var Room = require('../models/room')
+var Comment = require('../models/comment')
 
 async function emailUnavailable(req) {
     var emailIsUnavailable = false
@@ -104,10 +105,24 @@ const handleHotelEditForm = async (req, res) => {
     await body('city').trim()
         .matches(/^[\p{L}\d\W]{1,85}$/u).withMessage('City name cannot be empty or longer than 85 characters').run(req)
 
+    const countryCodes = {
+        Poland: 'PL',
+        Germany: 'DE',
+        Austria: 'AT',
+        France: 'FR',
+        Denmark: 'DK'
+    }
+
     if (!req.session.logged)
         req.redirect('/login')
 
     const errors = validationResult(req).array()
+
+    const postalCodeValid = postalCodes.validate(countryCodes[req.body.country], req.body.postal)
+
+    if (postalCodeValid !== true)
+        errors.push({ msg: `Invalid postal code for ${req.body.country}` })
+
     let isEmailUnavailable = await emailUnavailable(req)
 
     await Hotel.findOne({ _id: req.session.userId }, (err, result) => {
@@ -126,7 +141,6 @@ const handleHotelEditForm = async (req, res) => {
                 result.webPage = webPage
             else if (typeof result.webPage != 'undefined')
                 result.webPage = undefined
-
 
             if (photo !== '')
                 result.photo = photo
@@ -160,17 +174,43 @@ exports.showAccount = async (req, res) => {
         await Hotel.findOne({ _id: req.params.id }).lean().exec(),
     ]
 
-    await Promise.all(queries).then(results => {
+    await Promise.all(queries).then(async results => {
         if (results[0] !== null) {
             results[0].joined = results[0].joined.toISOString().substr(0, 10)
-            return res.render('accounts/account.ejs', { user: results[0], session: req.session })
+
+            var queries = [
+                await Comment.find({ user: req.params.id, byUser: false }).populate('hotel').lean().exec(),
+                await Comment.find({ user: req.params.id, byUser: true }).populate('hotel').lean().exec()
+            ]
+
+            await Promise.all(queries).then(additionalData => {
+                if (additionalData[0].length == 0 && additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[0], session: req.session })
+                else if (additionalData[0].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[0], commentsByUser: additionalData[1], session: req.session })
+                else if (additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[0], commentsAboutUser: additionalData[0], session: req.session })
+                else
+                    return res.render('accounts/account.ejs', { user: results[0], commentsAboutUser: additionalData[0], commentsByUser: additionalData[1], session: req.session })
+            })
+
         } else if (results[1] !== null) {
 
-            Room.find({hotel: req.params.id}).populate('hotel').lean().exec().then(rooms => {
-                if (rooms.length > 0) {
-                    return res.render('accounts/account.ejs', { user: results[1], rooms: rooms, session: req.session })
-                }
-                return res.render('accounts/account.ejs', { user: results[1], session: req.session })
+            var queries = [
+                await Room.find({ hotel: req.params.id }).populate('hotel').lean().exec(),
+                await Comment.find({ hotel: req.params.id, byUser: true }).populate('user').lean().exec()
+            ]
+
+            await Promise.all(queries).then(additionalData => {
+                if (additionalData[0].length == 0 && additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[1], session: req.session })
+                else if (additionalData[0].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[1], commentsAboutHotel: additionalData[1], session: req.session })
+                else if (additionalData[1].length == 0)
+                    return res.render('accounts/account.ejs', { user: results[1], rooms: additionalData[0], session: req.session })
+                else
+                    return res.render('accounts/account.ejs', { user: results[1], rooms: additionalData[0], commentsAboutHotel: additionalData[1], session: req.session })
+
             })
 
         } else {
@@ -294,18 +334,28 @@ exports.handleEditPhotosForm = async (req, res) => {
         return res.redirect(`/account/${req.session.userId}`)
     }
 
+    for (let i = 0; i < req.body.photos.length; i++) {
+        await body(`photos[${i}]`).trim().notEmpty().withMessage('A row with photo cannot be empty! Remove a row if you do not wish to add more photos!')
+            .isURL().withMessage(`Link to photo number ${i + 1} was not a valid URL!`).run(req)
+    }
+
+    const errors = validationResult(req).array()
+
     await Hotel.findOne({ _id: req.params.id }, (err, result) => {
+        if (errors.length !== 0)
+            return res.render('accounts/editHotelPhotos.ejs', { errors: errors, user: result, session: req.session })
+
         if (result != null) {
             result.photos = []
-            
-            if(typeof req.body.photos != 'undefined'){
+
+            if (typeof req.body.photos != 'undefined') {
                 for (photo of req.body.photos) {
-                    if (photo.trim() !== '') {
+                    if (photo !== '') {
                         result.photos.push(photo)
                     }
                 }
             }
-            
+
             result.save()
             return res.render('accounts/editHotelPhotos.ejs', { messages: [{ msg: 'Successfully edited photos' }], user: result, session: req.session })
         }

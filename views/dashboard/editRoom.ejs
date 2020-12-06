@@ -8,16 +8,24 @@
     <%- include("../partials/nav.ejs") %>
     <link rel="stylesheet" href="/css/add-room-form.css">
 
-    <% if (typeof errors != 'undefined') { %>
+    <% if (typeof room != 'undefined') { %>
+
+        <section>
+            <div id="multple-step-form-n" class="container overflow-hidden" style="margin-top: 0px;margin-bottom: 10px;padding-bottom: 300px;padding-top: 57px;">
+
+                <% if (typeof errors != 'undefined') { %>
                     <% for (error of errors) { %>
                     <div class="alert alert-danger" role="alert"><span><%= error.msg %></span></div>
                     <% } %>
                 <% } %>
 
-    <% if (typeof room != 'undefined') { %>
+                <% if (typeof messages != 'undefined') { %>
+                    <% for (message of messages) { %>
+                    <div class="alert alert-success" role="alert"><span><%= message.msg %></span></div>
+                    <% } %>
+                <% } %>
+    
 
-        <section>
-            <div id="multple-step-form-n" class="container overflow-hidden" style="margin-top: 0px;margin-bottom: 10px;padding-bottom: 300px;padding-top: 57px;">
                 <!-- PROGRESS BAR -->
                 <div id="progress-bar-button" class="multisteps-form">
                     <div class="row">
@@ -110,10 +118,14 @@
                                         <div class="col-12 col-sm-12">
                                             <label for="standard">Room standard</label>
                                             <select name="standard" class="form-control" style="width: 100%;text-align: left;" id="standard" required>
-                                                <option value="Standard">Standard</option>
-                                                <option value="Exclusive">Exclusive</option>
-                                                <option value="Premium">Premium</option>
-                                                <option value="Deluxe">Deluxe</option>  
+                                                <% const standards = ['Standard', 'Exclusive', 'Premium', 'Deluxe']; %>
+                                                    <% for(standard of standards) { %>
+                                                        <% if (standard === room.standard) { %>
+                                                            <option value="<%= standard %>" selected><%= standard %></option>
+                                                        <% } else { %>
+                                                        <option value="<%= standard %>"><%= standard %></option>
+                                                        <% } %>
+                                                    <% } %>
                                             </select>
                                         </div>
                                     </div>

@@ -9,4 +9,8 @@ router.get("/rooms", listingController.showRooms)
 
 router.get("/rooms/:id", listingController.showSingleRoom)
 
+router.get("/rooms/:id/book", listingController.showReservationForm)
+
+router.post("/rooms/:id/book", listingController.handleReservationForm)
+
 module.exports = router

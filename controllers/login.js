@@ -4,7 +4,7 @@ var Hotel = require('../models/hotel')
 
 exports.showLoginForm = (req, res) => {
     if (req.session.logged) {
-        return res.render('index.ejs', { messages: [{msg: 'You are already signed in!'}], session: req.session })
+        return res.render('index.ejs', { messages: [{ msg: 'You are already signed in!' }], session: req.session })
     }
     return res.render('authorization/login.ejs', { session: req.session })
 }
@@ -12,7 +12,7 @@ exports.showLoginForm = (req, res) => {
 exports.handleLoginForm = async (req, res) => {
 
     if (req.session.logged) {
-        return res.render('index.ejs', { messages: [{msg: 'You are already signed in!'}], session: req.session })
+        return res.render('index.ejs', { messages: [{ msg: 'You are already signed in!' }], session: req.session })
     }
 
     const checkPasswordAndProceed = account => {
