@@ -67,6 +67,10 @@ exports.showReservationForm = async (req, res) => {
     if (!req.session.logged)
         return res.redirect('/login')
 
+    if (req.session.business) {
+        return res.render('listing/reservation.ejs', { room: undefined, errors: [{ msg: 'You cannot book a room using business account!' }], session: req.session })
+    }
+
     await Room.findOne({ _id: req.params.id }).populate('hotel').lean().exec().then(room => {
         if (room == null)
             return res.render('listing/reservation.ejs', { errors: [{ msg: 'Invalid room ID!' }], session: req.session })
@@ -78,7 +82,7 @@ exports.handleReservationForm = async (req, res) => {
 
     let currentDate = new Date()
 
-    if (req.sesssion.business) {
+    if (req.session.business) {
         return res.render('listing/reservation.ejs', { room: undefined, errors: [{ msg: 'You cannot book a room using business account!' }], session: req.session })
     }
 
