@@ -60,6 +60,10 @@ function filterRooms() {
         if (parseFloat(roomInfo["rating"]) < parseFloat(document.getElementById('rating').value))
             hideRoom(room);
 
+        if(roomInfo["rating"] === 'No rating' && document.getElementById('hideNoRating').checked) {
+            hideRoom(room);
+        }
+
     }
 }
 
@@ -87,6 +91,7 @@ function resetFilters() {
     document.getElementById('standard').value = 'Standard';
     document.getElementById('priceLow').value = '';
     document.getElementById('priceHigh').value = '';
+    document.getElementById('hideNoRating').checked = false;
 }
 
 function updateRangeValue(input) {

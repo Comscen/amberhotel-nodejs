@@ -21,6 +21,10 @@ function filterHotels() {
             hotel.style = 'display: none;'
         }
 
+        if(hotelRating === 'No rating' && document.getElementById('hideNoRating').checked) {
+            hotel.style = 'display: none;'
+        }
+
     }
 }
 
@@ -37,6 +41,7 @@ function resetFilters() {
     updateRangeValue(rating)
     document.getElementById('city').value = ''
     document.getElementById('country').value = 'Poland'
+    document.getElementById('hideNoRating').checked = false;
 }
 
 function updateRangeValue(input) {
