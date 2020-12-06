@@ -164,8 +164,8 @@
                 let endDate = new Date(endDateArray[0], endDateArray[1] - 1, endDateArray[2]);
                 
                 let priceString = '<%= room.price %>';
-                if (typeof price != 'undefined')
-                    priceString = parseInt(price)
+                if (typeof priceString != 'undefined')
+                    var price = parseInt(priceString)
                 let totalCost = 0;
                 while (startDate < endDate) {
                     totalCost += price;
