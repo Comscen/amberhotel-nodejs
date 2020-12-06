@@ -1,4 +1,3 @@
-var { body, validationResult, oneOf } = require('express-validator')
 var User = require('../models/user')
 var Hotel = require('../models/hotel')
 var Comment = require('../models/comment')
@@ -8,9 +7,8 @@ exports.showForUserCommentForm = async (req, res) => {
     if (!req.session.logged)
         return res.redirect('/login')
 
-    //TO MA REDIRECTOWAĆ NA DASHBOARD
     if (req.session.business)
-        return res.redirect('/login')
+        return res.redirect('/dashboard/history')
 
     await Hotel.findOne({ _id: req.params.id }).lean().exec().then(async hotel => {
         if (hotel == null)
@@ -33,9 +31,8 @@ exports.showForHotelCommentForm = async (req, res) => {
     if (!req.session.logged)
         return res.redirect('/login')
 
-    //TO MA REDIRECTOWAĆ NA LISTĘ REZERWACJI
     if (!req.session.business)
-        return res.redirect('/login')
+        return res.redirect('/dashboard/history')
 
     await User.findOne({ _id: req.params.id }).lean().exec().then(async user => {
         if (user == null)
@@ -58,9 +55,8 @@ exports.handleForUserCommentForm = async (req, res) => {
     if (!req.session.logged)
         return res.redirect('/login')
 
-    //TO MA REDIRECTOWAĆ NA DASHBOARD
     if (req.session.business)
-        return res.redirect('/login')
+        return res.redirect('/dashboard/history')
 
     await Hotel.findOne({ _id: req.params.id }).exec().then(async hotel => {
         if (hotel == null)
@@ -105,9 +101,8 @@ exports.handleForHotelCommentForm = async (req, res) => {
     if (!req.session.logged)
         return res.redirect('/login')
 
-    //TO MA REDIRECTOWAĆ NA LISTĘ REZERWACJI
     if (!req.session.business)
-        return res.redirect('/login')
+        return res.redirect('/dashboard/history')
 
     await User.findOne({ _id: req.params.id }).exec().then(async user => {
         if (user == null)
