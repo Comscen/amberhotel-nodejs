@@ -36,9 +36,9 @@
                     <div class="row justify-content-center">
                         <div class="col-md-6 text-center">
                             <% if (typeof hotel.photo != 'undefined') { %>
-                                <img class="rounded-circle" src="<%= room.hotel.photo %>" width="50px" height="50px">
+                                <img class="rounded-circle" src="<%= room.hotel.photo %>" width="60px" height="60px">
                             <% } else { %>
-                                <img class="rounded-circle" src="/img/no_picture.png" width="50px" height="50px">
+                                <img class="rounded-circle" src="/img/no_picture.png" width="60px" height="60px">
                             <% } %>
                         </div>
                     </div>
@@ -52,7 +52,8 @@
                                     <% } else { %>
                                         No rating
                                     <% } %>
-                                    <img src="/img/star.png" width="25px" style="margin-top: -5px;width: 15px;"></span>
+                                    <img src="/img/star.png" width="25px" style="margin-top: -5px;width: 15px;">
+                                </span>
                             </h3>
                         </div>
                     </div>

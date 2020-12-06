@@ -1,6 +1,6 @@
 {
 	"name": "amber-hotel",
-	"version": "0.9.3",
+	"version": "1.0.0",
 	"description": "Amber Hotel",
 	"main": "app.js",
 	"scripts": {
