@@ -15,6 +15,7 @@ const ReservationSchema = new mongoose.Schema({
         ccExpDate: { type: String, required: true },
         holderName: { type: String, required: true }
     },
+    hotel: {type:String, ref: 'Hotel', required: true},
     room: { type: String, ref: 'Room', required: true },
     user: { type: String, ref: 'User', required: true }
 })

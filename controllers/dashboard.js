@@ -1,5 +1,7 @@
 const { body, validationResult } = require("express-validator")
+const { populate } = require("../models/room")
 const Room = require("../models/room")
+const Reservation = require("../models/reservation")
 
 exports.showDashboard = async (req, res) => {
     if (!req.session.logged) {
@@ -245,3 +247,28 @@ exports.handleEditRoomForm = [
         }).catch(err => console.log(`CRITICAL ERROR DURING LOADING EDIT ROOM PAGE: \n${err}`))
     }
 ]
+
+
+exports.showHistory = async (req, res) => {
+    if (!req.session.logged)
+        return res.redirect('/login')
+
+    if(req.session.business !== true){
+        await Reservation.find({user: req.session.userId}).lean().populate('hotel').exec().then(async reservations =>{
+            if (reservations != null){
+                reservations.reverse()
+                return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
+            }
+            return res.render('dashboard/history.ejs', {errors: [{msg: 'Something went wrong'}], session: req.session})
+        }).catch(err => console.log(`CRITICAL GET HISTORY WHILE QUERYING PRIVATE USER RESERVATIONS:\n ${err}`))
+    } else {
+        await Reservation.find({hotel: req.session.userId}).lean().populate('user').exec().then(async reservations =>{
+            if (reservations != null && reservations.length > 0){
+                reservations.reverse()
+                return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
+            }
+            return res.render('dashboard/history.ejs', {errors: [{msg: 'Something went wrong'}], session: req.session})
+        }).catch(err => console.log(`CRITICAL GET HISTORY WHILE QUERYING BUSINESS USER RESERVATIONS:\n ${err}`))
+    }
+    
+}
