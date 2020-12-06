@@ -74,10 +74,13 @@ exports.showReservationForm = async (req, res) => {
     })
 }
 
-//DZIEJĄ SIĘ TU RZECZY KTÓRE SIĘ PROGRAMISTOM NIE ŚNIŁY I TRZEBA ZWRACAĆ UWAGĘ CZY DATY SIĘ ZGADZAJĄ
 exports.handleReservationForm = async (req, res) => {
 
     let currentDate = new Date()
+
+    if (req.sesssion.business) {
+        return res.render('listing/reservation.ejs', { room: undefined, errors: [{ msg: 'You cannot book a room using business account!' }], session: req.session })
+    }
 
     await body('expirationDate').custom(expDate => {
         expDate = expDate.split('-')
