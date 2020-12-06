@@ -255,7 +255,7 @@ exports.showHistory = async (req, res) => {
 
     if(req.session.business !== true){
         await Reservation.find({user: req.session.userId}).lean().populate('hotel').exec().then(async reservations =>{
-            if (reservations != null){
+            if (reservations.length > 0){
                 reservations.reverse()
                 return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
             }
@@ -263,7 +263,7 @@ exports.showHistory = async (req, res) => {
         }).catch(err => console.log(`CRITICAL GET HISTORY WHILE QUERYING PRIVATE USER RESERVATIONS:\n ${err}`))
     } else {
         await Reservation.find({hotel: req.session.userId}).lean().populate('user').exec().then(async reservations =>{
-            if (reservations != null && reservations.length > 0){
+            if (reservations.length > 0){
                 reservations.reverse()
                 return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
             }
