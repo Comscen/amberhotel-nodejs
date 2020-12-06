@@ -156,7 +156,7 @@ exports.handleEditRoomForm = [
 
     // Description - letters, numbers, ',' and '.', 
     body('description').trim().isLength({ max: 900 }).withMessage('Description cannot be longer than 900 characters')
-        .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters except for period and comma'),
+        .matches(/^[^\\W]{0}[0-9]{0,}[\p{L}\d\s\-&.,!?'"]{0,}$/u).withMessage('Description cannot contain special characters other than "-&.,!? \'\" "'),
 
     // Price - numbers only
     body('price').trim()
