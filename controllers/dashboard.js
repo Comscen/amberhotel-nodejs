@@ -259,7 +259,7 @@ exports.showHistory = async (req, res) => {
                 reservations.reverse()
                 return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
             }
-            return res.render('dashboard/history.ejs', {errors: [{msg: 'Something went wrong'}], session: req.session})
+            return res.render('dashboard/history.ejs', {reservations: undefined, session: req.session})
         }).catch(err => console.log(`CRITICAL GET HISTORY WHILE QUERYING PRIVATE USER RESERVATIONS:\n ${err}`))
     } else {
         await Reservation.find({hotel: req.session.userId}).lean().populate('user').exec().then(async reservations =>{
@@ -267,7 +267,7 @@ exports.showHistory = async (req, res) => {
                 reservations.reverse()
                 return res.render('dashboard/history.ejs', {reservations: reservations, session: req.session})
             }
-            return res.render('dashboard/history.ejs', {errors: [{msg: 'Something went wrong'}], session: req.session})
+            return res.render('dashboard/history.ejs', {reservations: undefined, session: req.session})
         }).catch(err => console.log(`CRITICAL GET HISTORY WHILE QUERYING BUSINESS USER RESERVATIONS:\n ${err}`))
     }
     
