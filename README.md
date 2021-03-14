@@ -3,8 +3,6 @@
 
 AmberHotel is a web application made by us as a project for our studies. It's premise is to work like booking.com where you can easily browse thousands of hotel rooms and apartments to find what suits you best and make a reservation.
 
-~~You can look at the newest version <a href= "#">here</a>.~~ *Deployments temporarily disabled*
-
 A brief list of functionalities:
 
 - Create and edit private or business accounts
